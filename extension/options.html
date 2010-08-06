@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>SuperChromePass Options</title>
+	<style type="text/css">
+		body{max-width:800px;margin:auto;font-family:sans-serif;background:white;color:black}
+		h1{padding:50px 0 0 0;margin:0;font-size:1.5em}
+		#header{background:url('icon_128.png') no-repeat;padding:0 0 0 120px;
+			height:100px;vertical-align:middle;text-align:center;margin:0}
+		#header a{text-decoration:none}
+		.section-header{display:block;width:100%;background:#EBEFF9;border:0;padding:2px;
+		border-top:1px solid #B5C7DE;margin-top:30px;text-decoration:none;color:#000}
+		.section-header span{width:16px;height:16px;margin:0;padding:0 8px;
+			background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALBJREFUeNpi/P//PwMlgImBQjDwBrCgC3R1df3/+vUrTg0CAgIMhYWFjDhdYGZm1oDPRisrqwa8XnBwcGiUkpI68O/fPwZ0rKysfMDc3LyRYBhYWFgcYGZmRhFjY2NjMDY2PkBUIOrr6zfq6uoeAKURGDYyMjqgra3dSHQsBAcHO/Ly8oLZwsLCDN7e3o4kRyPQKw2MjIwMlpaWuAMW2ZnY8J49e+rxyTOO5gUGgAADADbLaAF51NehAAAAAElFTkSuQmCC)
+			no-repeat;}
+		.section-header span.down{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALpJREFUeNpi/P//PwMlgImBQkAbA/r6+v4fO3asnmwDPn78yLBz586GBQsW7L9+/Tpeg1jwSd6/f9/hyZMnDoaGhg7e3t6ORLvg379/cPzz50+GEydOOPT39/8H0vVkB+K7d+8Ytm3b1nDw4MF6gl7AljYEBQUZLC0tG6ysrBqJDgMQYGVlZTAwMDjg7+/vSHQgwlygoKBwwNTU9ADQgEaSYoGHh4fB3Ny8wcnJqZGQCxmHaV4gBQAEGABldUvSNl+JvwAAAABJRU5ErkJggg%3D%3D)
+			no-repeat;}
+		div{text-align:center}
+		label{margin-right:15px}
+		.answer_box{padding:30px;background:#fff;border:1px solid #000;font-size:0.9em;
+			border-radius:10px;position:absolute;width:400px;margin-left:-200px;top:50%;left:50%}
+		.answer_box a{display:block}
+		input[type="range"]{height:11px;}
+	</style>
+	<script type="text/javascript">
+	var bg = chrome.extension.getBackgroundPage();
+
+	function init()
+	{
+		if(localStorage['passwordlength'])
+		{
+			document.getElementById('password_length_input').value = localStorage['passwordlength'];
+		}
+		if(localStorage['password'])
+		{
+			document.getElementById('password_saving_remember').setAttribute('checked','checked');
+			document.getElementById('password_saving_password').value = localStorage['password'];
+			document.getElementById('password_saving_password').removeAttribute('disabled');
+			document.getElementById('password_saving_button').removeAttribute('disabled');
+			document.getElementById('password_saving_label').className = '';
+		}
+		else if(localStorage['passwordhash'])
+		{
+			document.getElementById('password_saving_hash').setAttribute('checked','checked');
+		}
+		else if(bg.session_password)
+		{
+			document.getElementById('password_saving_session').setAttribute('checked','checked');
+			document.getElementById('password_saving_password').value = bg.session_password;
+			document.getElementById('password_saving_password').removeAttribute('disabled');
+			document.getElementById('password_saving_button').removeAttribute('disabled');
+			document.getElementById('password_saving_label').className = '';
+		}
+		if(localStorage['stealthPassword'])
+		{
+			document.getElementById('password_stealth_input1').value = localStorage['stealthPassword'];
+		}
+	}
+
+	function toggleDiv(el)
+	{
+		var pntr = document.getElementById(el+ '_pointer');
+		var el = document.getElementById(el);
+		el.style.display = el.style.display == 'none'?'':'none';
+	pntr.className = pntr.className == 'down'?'':'down';
+		return false;
+	}
+
+	function setPassWordSaving(el)
+	{
+		var el = document.getElementById('password_saving_'+ el);
+		if(el.checked && el.getAttribute('id')!='password_saving_none')
+		{
+			document.getElementById('password_saving_label').className='';
+			document.getElementById('password_saving_password').removeAttribute('disabled');
+			document.getElementById('password_saving_button').removeAttribute('disabled');
+		}
+		else
+		{
+			document.getElementById('password_saving_label').className='disabled';
+			document.getElementById('password_saving_password').setAttribute('disabled','disabled');
+			document.getElementById('password_saving_button').setAttribute('disabled','disabled');
+		}
+	}
+
+	function question(el)
+	{
+		document.getElementById(el+'_answer').style.display='';
+	}
+
+	function togglePasswordVisibility(el)
+	{
+		passbox = document.getElementById(el);
+		passbox.setAttribute('type',passbox.getAttribute('type')=='password'?'text':'password');
+	}
+
+	function saveOption(type)
+	{
+		if(type=='saving')
+		{
+			if(document.saving.password_saving[1].checked)
+			{
+				console.log('Hash');
+				delete localStorage['password'];
+				bg.session_password = '';
+				localStorage['passwordhash'] = b64_md5(document.getElementById('password_saving_password').value);
+			}
+			else if(document.saving.password_saving[2].checked)
+			{
+				console.log('Session');
+				delete localStorage['passwordhash'];
+				delete localStorage['password'];
+				bg.session_password = document.getElementById('password_saving_password').value;
+			}
+			else if(document.saving.password_saving[3].checked)
+			{
+				console.log('Forever');
+				delete localStorage['passwordhash'];
+				bg.session_password = '';
+				localStorage['password'] = document.getElementById('password_saving_password').value;
+			}
+		}
+
+		if(type=='length')
+		{
+			length = document.getElementById('password_length_input').value;
+			if(length>24) { alert('The length cannot be more than 24'); return false; }
+			if(length<4) { alert('The length cannot be less than 4'); return false; }
+			localStorage['passwordlength'] =
+				length;
+		}
+
+		if(type=='stealth')
+		{
+			if(document.getElementById('password_stealth_input1').value==
+						document.getElementById('password_stealth_input2').value)
+			{
+				if(document.getElementById('password_stealth_input1')=='')
+				{
+					delete localStorage['stealthPassword'];
+				}
+				else
+				{
+					localStorage['stealthPassword'] = document.getElementById('password_stealth_input1').value;
+				}
+			}
+			else
+			{
+				alert('The stealth password does not match the confirmation password box');
+			}
+		}
+
+		if(type=='key')
+		{
+			key = document.getElementById('password_shortcut_key').value;
+			mod = document.getElementById('password_shortcut_mod').value;
+			if(key.length==0) { alert('Please enter a key to press'); return false; }
+			localStorage['keyCode'] = key;
+			if(mod)
+			{
+				localStorage['keyMod'] = key;
+			}
+			else
+			{
+				delete localStorage['keyMod'];
+			}
+		}
+		return false;
+	}
+
+	/**** SuperGenPass Stuff ****/
+	function b64_md5(p) {
+		p = utf8_en(p);
+		return binl2b64(core_md5(str2binl(p),p.length*8));
+	}
+	function binl2b64(binarray) {
+		var tab = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678998';
+		var str = '';
+		for(var i = 0; i<binarray.length*4; i+= 3) {
+			var triplet = (((binarray[i>>2]>>8*(i%4))&0xFF)<<16)|(((binarray[i+1>>2]>>8*((i+1)%4))&0xFF)<<8)|((binarray[i+2>>2]>>8*((i+2)%4))&0xFF);
+			for(var j = 0; j<4; j++) {
+				str+= tab.charAt((triplet>>6*(3-j))&0x3F);
+			}
+		}
+		return str;
+	}
+
+	function core_md5(x,len){
+				x[len>>5]|= 0x80<<((len)%32); x[(((len+64)>>>9)<<4)+14] = len;
+				var a = 1732584193; var b = -271733879; var c = -1732584194; var d = 271733878;
+				for(var i = 0;i<x.length;i+= 16){
+					var olda = a; var oldb = b; var oldc = c; var oldd = d;
+					a = md5_ff(a,b,c,d,x[i+0],7,-680876936); d = md5_ff(d,a,b,c,x[i+1],12,-389564586); c = md5_ff(c,d,a,b,x[i+2],17,606105819); b = md5_ff(b,c,d,a,x[i+3],22,-1044525330);
+					a = md5_ff(a,b,c,d,x[i+4],7,-176418897); d = md5_ff(d,a,b,c,x[i+5],12,1200080426); c = md5_ff(c,d,a,b,x[i+6],17,-1473231341); b = md5_ff(b,c,d,a,x[i+7],22,-45705983);
+					a = md5_ff(a,b,c,d,x[i+8],7,1770035416); d = md5_ff(d,a,b,c,x[i+9],12,-1958414417); c = md5_ff(c,d,a,b,x[i+10],17,-42063); b = md5_ff(b,c,d,a,x[i+11],22,-1990404162);
+					a = md5_ff(a,b,c,d,x[i+12],7,1804603682); d = md5_ff(d,a,b,c,x[i+13],12,-40341101); c = md5_ff(c,d,a,b,x[i+14],17,-1502002290); b = md5_ff(b,c,d,a,x[i+15],22,1236535329);
+					a = md5_gg(a,b,c,d,x[i+1],5,-165796510); d = md5_gg(d,a,b,c,x[i+6],9,-1069501632); c = md5_gg(c,d,a,b,x[i+11],14,643717713); b = md5_gg(b,c,d,a,x[i+0],20,-373897302);
+					a = md5_gg(a,b,c,d,x[i+5],5,-701558691); d = md5_gg(d,a,b,c,x[i+10],9,38016083); c = md5_gg(c,d,a,b,x[i+15],14,-660478335); b = md5_gg(b,c,d,a,x[i+4],20,-405537848);
+					a = md5_gg(a,b,c,d,x[i+9],5,568446438); d = md5_gg(d,a,b,c,x[i+14],9,-1019803690); c = md5_gg(c,d,a,b,x[i+3],14,-187363961); b = md5_gg(b,c,d,a,x[i+8],20,1163531501);
+					a = md5_gg(a,b,c,d,x[i+13],5,-1444681467); d = md5_gg(d,a,b,c,x[i+2],9,-51403784); c = md5_gg(c,d,a,b,x[i+7],14,1735328473); b = md5_gg(b,c,d,a,x[i+12],20,-1926607734);
+					a = md5_hh(a,b,c,d,x[i+5],4,-378558); d = md5_hh(d,a,b,c,x[i+8],11,-2022574463); c = md5_hh(c,d,a,b,x[i+11],16,1839030562); b = md5_hh(b,c,d,a,x[i+14],23,-35309556);
+					a = md5_hh(a,b,c,d,x[i+1],4,-1530992060); d = md5_hh(d,a,b,c,x[i+4],11,1272893353); c = md5_hh(c,d,a,b,x[i+7],16,-155497632); b = md5_hh(b,c,d,a,x[i+10],23,-1094730640);
+					a = md5_hh(a,b,c,d,x[i+13],4,681279174); d = md5_hh(d,a,b,c,x[i+0],11,-358537222); c = md5_hh(c,d,a,b,x[i+3],16,-722521979); b = md5_hh(b,c,d,a,x[i+6],23,76029189);
+					a = md5_hh(a,b,c,d,x[i+9],4,-640364487); d = md5_hh(d,a,b,c,x[i+12],11,-421815835); c = md5_hh(c,d,a,b,x[i+15],16,530742520); b = md5_hh(b,c,d,a,x[i+2],23,-995338651);
+					a = md5_ii(a,b,c,d,x[i+0],6,-198630844); d = md5_ii(d,a,b,c,x[i+7],10,1126891415); c = md5_ii(c,d,a,b,x[i+14],15,-1416354905); b = md5_ii(b,c,d,a,x[i+5],21,-57434055);
+					a = md5_ii(a,b,c,d,x[i+12],6,1700485571); d = md5_ii(d,a,b,c,x[i+3],10,-1894986606); c = md5_ii(c,d,a,b,x[i+10],15,-1051523); b = md5_ii(b,c,d,a,x[i+1],21,-2054922799);
+					a = md5_ii(a,b,c,d,x[i+8],6,1873313359); d = md5_ii(d,a,b,c,x[i+15],10,-30611744); c = md5_ii(c,d,a,b,x[i+6],15,-1560198380); b = md5_ii(b,c,d,a,x[i+13],21,1309151649);
+					a = md5_ii(a,b,c,d,x[i+4],6,-145523070); d = md5_ii(d,a,b,c,x[i+11],10,-1120210379); c = md5_ii(c,d,a,b,x[i+2],15,718787259); b = md5_ii(b,c,d,a,x[i+9],21,-343485551);
+					a = safe_add(a,olda); b = safe_add(b,oldb); c = safe_add(c,oldc); d = safe_add(d,oldd);
+				}
+				return Array(a,b,c,d);
+			}
+
+			function md5_cmn(q,a,b,x,s,t) { return safe_add(bit_rol(safe_add(safe_add(a,q),safe_add(x,t)),s),b); }
+			function md5_ff(a,b,c,d,x,s,t) { return md5_cmn((b&c)|((~b)&d),a,b,x,s,t); }
+			function md5_gg(a,b,c,d,x,s,t) { return md5_cmn((b&d)|(c&(~d)),a,b,x,s,t); }
+			function md5_hh(a,b,c,d,x,s,t) { return md5_cmn(b^c^d,a,b,x,s,t); }
+			function md5_ii(a,b,c,d,x,s,t) { return md5_cmn(c^(b|(~d)),a,b,x,s,t); }
+			function safe_add(x,y) { var lsw = (x&0xFFFF)+(y&0xFFFF); var msw = (x>>16)+(y>>16)+(lsw>>16); return (msw<<16)|(lsw&0xFFFF); }
+			function bit_rol(num,cnt) { return (num<<cnt)|(num>>>(32-cnt)); }
+			function str2binl(str) { var bin = Array(); var mask = (1<<8)-1; for(var i = 0;i<str.length*8;i+= 8) bin[i>>5]|= (str.charCodeAt(i/8)&mask)<<(i%32); return bin; }
+			function utf8_en(str){return unescape(encodeURIComponent(str));}
+
+	</script>
+</head>
+<body onload="init()">
+
+	<div id="header">
+		<a href="http://code.google.com/p/superchromepass">
+			<h1>SuperChromePass Options</h1>
+		</a>
+	</div>
+
+	<a href="#" class="section-header" onclick="toggleDiv('password_options')">
+		<span id="password_options_pointer"></span>Password Saving
+	</a>
+	<div id="password_options">
+		<form onsubmit="return false" name="saving"><p>
+		<label for="password_saving_password" class="disabled" id="password_saving_label">Password:</label>
+			<input type="password" id="password_saving_password" disabled="false">
+			<img src="eye.png" onclick="togglePasswordVisibility('password_saving_password')">
+			<button disabled="disabled" id="password_saving_button" onclick="saveOption('saving')">Save</button>
+		</p><p>
+		<input type="radio" name="password_saving" id="password_saving_none" onclick="setPassWordSaving('none');saveOption('saving')">
+			<label for="password_saving_none">No extras</label>
+		<input type="radio" name="password_saving" id="password_saving_hash" onclick="setPassWordSaving('hash')">
+			<label for="password_saving_hash">
+				Check hash (<a href="#" onclick="question('hash')">?</a>)
+			</label>
+		<input type="radio" name="password_saving" id="password_saving_session" onclick="setPassWordSaving('session')">
+			<label for="password_saving_session">
+				Remember for Session (<a href="#" onclick="question('session')">?</a>)
+			</label>
+		<input type="radio" name="password_saving" id="password_saving_remember" onclick="setPassWordSaving('remember')">
+			<label for="password_saving_remember">
+				Remember indefiniately (<a href="#" onclick="question('remember')">?</a>)
+			</label>
+		</p></form>
+	</div>
+
+	<a href="#" class="section-header" onclick="toggleDiv('advanced_options')">
+		<span id="advanced_options_pointer"></span>Advanced Password Options
+	</a>
+	<div id="advanced_options">
+		<form onsubmit="return false" name="length"><p>
+		<label for="password_length_input">Password length  (<a href="#" onclick="question('length')">?</a>):</label>
+		<span id="password_length_length"></span>
+		<input type="range" min="4" max="25" step="1" value="10" style="width:250px" id="password_length_input" onkeyup="this.value = this.value.replace(/[^0-9]/g,'');" onchange="document.getElementById('password_length_length').innerHTML = this.value">
+		<button id="password_length_button" onclick="saveOption('length')">Save</button>
+		</p></form><form onsubmit="return false" name="stealth"><p>
+		<label for="password_stealth_input1">Stealth Password  (<a href="#" onclick="question('stealth')">?</a>):</label>
+		<input type="password" value="" id="password_stealth_input1">
+		<img src="eye.png" onclick="togglePasswordVisibility('password_stealth_input1')">
+		<label for="password_stealth_input2">Re-enter:</label>
+		<input type="password" value="" id="password_stealth_input2">
+		<button id="password_stealth_button" onclick="saveOption('stealth')">Save</button><br>
+		</p></form>
+	</div>
+
+	<a href="#" class="section-header" onclick="toggleDiv('about')">
+		<span id="about_pointer"></span>About
+	</a>
+	<div id="about">
+		<p>
+			SuperChromePass is created and &copy; Keithamus, under the MIT licence<br>for more
+			information about the MIT licence, please visit the
+			<a href="http://www.opensource.org/licenses/mit-license.php">OSI Licence Information</a>
+		</p><p>
+			You can donate to the SuperChromePass project by using
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=10497475">this link</a>
+		</p><p>
+			SuperChromePass is based off of the great work of
+			<a href="http://www.supergenpass.com">SuperGenPass</a>
+		</p>
+	</div>
+
+
+	<div id="hash_answer" style="display:none" class="answer_box">
+		This will save a "hash" of your password. A hash turns your password into a one-way
+		irreversable algorythm, so we can use it to check your password, but it cannot be turned
+		back into your password. This makes it secure, but helps you to make sure you correctly
+		inputted your password.
+		<a href="#" onclick="this.parentElement.style.display='none'">Close</a>
+	</div>
+
+	<div id="session_answer" style="display:none" class="answer_box">
+		We will save your password as plaintext, inside the browser. When you close the browser,
+		it will forget this information. This option is remembered so that you only have to enter
+		it once every time you open your browser. This means your password is kept secure, so long
+		<b>as you close your browser after each use</b>.
+		<a href="#" onclick="this.parentElement.style.display='none'">Close</a>
+	</div>
+
+	<div id="remember_answer" style="display:none" class="answer_box">
+		We will save your password as plaintext, kept in the browser until you click to forget it.
+		This is important because if someone uses your computer, they will have full access to your
+		passwords. In other words; <b>do not use this option unless you fully understand the consequences
+		and are sure no one else will use your computer</b>.
+		<a href="#" onclick="this.parentElement.style.display='none'">Close</a>
+	</div>
+
+	<div id="length_answer" style="display:none" class="answer_box">
+		Changing the password length will change how long the generated password would be. The
+		default is ten (10), meaning it will be 10 characters long. You can change the length up
+		to 24 characters. It is good to change the default length to make your password harder to
+		crack, but lots of websites have a maximum password length. Keep this in mind.
+		<a href="#" onclick="this.parentElement.style.display='none'">Close</a>
+	</div>
+
+	<div id="stealth_answer" style="display:none" class="answer_box">
+		A "stealth" password, also known as a "salt" is a special password that is added on to
+		the end of your generated password. So, say your password is "password", and you pick a
+		stealth password of "1234", a new password might look like: hX5WrKH2UFyf1234. Notice
+		your stealth password has been added to the end of your generated password. This adds
+		just that little bit more security, to make your passwords even more obscure, <b>but you
+		will need to remember your stealth password when away from this computer!</b>
+		<a href="#" onclick="this.parentElement.style.display='none'">Close</a>
+	</div>
+
+</body>
+</html>
