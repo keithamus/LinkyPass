@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+	<head>
+
+		<style type = "text/css">
+
+			body{
+				overflow:      visible;
+				width:         230px;
+				background:    white;
+				color:         black;
+			}
+
+			*{
+				margin:        0 auto;
+				padding:       0;
+				font-family:   sans-serif;
+			}
+
+			div{
+				text-align:    center;
+			}
+
+			h1{
+				font-size:     0.8em;
+				border-radius: 15px;
+				padding:       2px 10px;
+				margin:        5px;
+				text-shadow:   0 1px 1px #fff;
+				background:    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAeCAIAAABi9+OQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB9JREFUeNpievbsGRMDAwPT////UTBMjBg5MvQDBBgA2EY+s1m0K/IAAAAASUVORK5CYII%3D)
+				 repeat-x top #e6e6e6;
+				border:        1px solid #bdbdbd;
+				color:         #6e6e6e
+			}
+
+			h1.open{
+				text-align:    left;
+				padding-left:  6px
+			}
+
+			h1 span{
+				width:         16px;
+				height:        16px;
+				margin:        0;
+				padding:       0 8px;
+				background:    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALpJREFUeNpi/P//PwMlgImBQkAbA/r6+v4fO3asnmwDPn78yLBz586GBQsW7L9+/Tpeg1jwSd6/f9/hyZMnDoaGhg7e3t6ORLvg379/cPzz50+GEydOOPT39/8H0vVkB+K7d+8Ytm3b1nDw4MF6gl7AljYEBQUZLC0tG6ysrBqJDgMQYGVlZTAwMDjg7+/vSHQgwlygoKBwwNTU9ADQgEaSYoGHh4fB3Ny8wcnJqZGQCxmHaV4gBQAEGABldUvSNl+JvwAAAABJRU5ErkJggg%3D%3D)
+					no-repeat;
+			}
+
+			h1 span.down{
+				background:    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALBJREFUeNpi/P//PwMlgImBQjDwBrCgC3R1df3/+vUrTg0CAgIMhYWFjDhdYGZm1oDPRisrqwa8XnBwcGiUkpI68O/fPwZ0rKysfMDc3LyRYBhYWFgcYGZmRhFjY2NjMDY2PkBUIOrr6zfq6uoeAKURGDYyMjqgra3dSHQsBAcHO/Ly8oLZwsLCDN7e3o4kRyPQKw2MjIwMlpaWuAMW2ZnY8J49e+rxyTOO5gUGgAADADbLaAF51NehAAAAAElFTkSuQmCC)
+					no-repeat;
+			}
+
+			p.left{
+				text-align:    left;
+			}
+
+			label{
+				font-size:     0.8em;
+				font-weight:   normal;
+			}
+
+			label.main{
+				width:         100%;
+				display:       block;
+				text-align:    center;
+			}
+
+			input[type = text],input[type = password],input[type = submit]{
+				width:         90%;
+			}
+			#Len{
+				width:         30px;
+			}
+
+		</style>
+		<script type="text/javascript" src="jquery-1.4.2.js"></script>
+		<script type="text/javascript" src="supergenpass.js"></script>
+		<script type = "text/javascript">
+			var bg = chrome.extension.getBackgroundPage();
+			var _passwordlength = 10;
+
+			function init()
+			{
+
+				//Get the URL from the selected tab
+				chrome.tabs.getSelected(null,
+					function(tab)
+					{
+						document.getElementById('Domain').value = tab.url;
+						setTimeout(function(){SGPLocal();},0);
+					}
+				);
+
+				//Set the password length to the localstorage
+				if(localStorage['passwordlength']>4)
+				{
+					_passwordlength = localStorage['passwordlength'];
+				}
+
+				//If the password is stored locally in plain text, then apply it.
+				if (localStorage['password'] && localStorage['password'].length>1)
+				{
+					console.log('Got localStorage password');
+					document.getElementById('Passwd').value = localStorage['password'];
+				}
+				//If the password is stored for this session, then apply it.
+				else if (bg.session_password && bg.session_password.length>1)
+				{
+					console.log('Got sessionStorage password');
+					document.getElementById('Passwd').value = bg.session_password;
+				}
+				//As a last resort, we could check to see if the user added the password
+				// to the form, and then clicked our button
+				else
+				{
+					chrome.tabs.getSelected(null,function(tab)
+						{
+							chrome.tabs.sendRequest(tab.id,{type:'get'}, function(response)
+							{
+								if (response.value && response.value.length > 1)
+								{
+									console.log('Got password from web page');
+									document.getElementById('Passwd').value = response.value;
+									setTimeout(function(){SGPLocal();},0);
+								}
+							}
+							)
+						}
+					);
+				}
+
+				//If the password hash is stored locally, then use it.
+				if (localStorage['passwordhash'] && localStorage['passwordhash'].length>1)
+				{
+					console.log('Got sessionStorage passwordhash');
+					document.getElementById('RememberPassHash').checked = 'checked';
+				}
+
+				//Focus the password field
+				document.getElementById('Passwd').focus();
+			}
+
+			//Open a DIV by id.
+			function OpenDiv(el) {
+				var more = document.getElementById(el);
+				if (more.style.display ==  'none') {
+					more.style.display = '';
+					document.getElementById(el+'pointer').className = 'down';
+				} else {
+					more.style.display = 'none';
+					document.getElementById(el+'pointer').className = '';
+				}
+				return false;
+			}
+
+			//The password can be applied to the tab
+			function ApplyPassToTab(Passwd) {
+				chrome.tabs.getSelected(null,function(tab) {
+						chrome.tabs.sendRequest(tab.id,{type:'set',value:Passwd})
+					});
+			} //end ApplyPassToTab();
+
+			//Check, using the hash, to see if the password hash matches the password entered.
+			function PasswordChanged() {
+				document.getElementById('GenPasswd').value = '';
+				if (localStorage['passwordhash'] && localStorage['passwordhash'].length>0)
+				{
+					if (b64_md5(document.getElementById('Passwd').value) ==  localStorage['passwordhash'])
+					{
+						document.getElementById('Passwd').style.borderColor = '#89DF00';
+						document.getElementById('Passwd').style.background = '#C7E892';
+					}
+					else
+					{
+						document.getElementById('Passwd').style.borderColor = '#EB3544';
+						document.getElementById('Passwd').style.background = '#F0B6BB';
+					}
+				}
+			}
+
+
+
+  </script>
+  </head>
+<body onload = "init()">
+
+  <div>
+
+				<h1 id = "title">SuperChromePass</h1>
+
+    <form onsubmit = "SGPLocal(null); return false;" action = "http://localhost:9/" method = "POST">
+
+      <h4><label class = "main" for = "Passwd">Master Password:</label></h4>
+      <input id="Passwd" name="Passwd" type="password" onkeyup="PasswordChanged()" autofocus>
+
+				<h1 onclick="OpenDiv('more')" id="domore" class="open"><span id = "morepointer"></span>Regenerate</h1>
+						<div id = "more" style = "display:none">
+
+						<h4><label class = "main" for = "Domain">Domain / URL</label></h4>
+      <p>
+        <input id = "Domain" name = "Domain" type = "text" onchange = "document.getElementById('GenPasswd').value = '';"><br>
+        <input id = "DisableTLD" name = "DisableTLD" type = "checkbox" onchange = "document.getElementById('GenPasswd').value = '';"> <label id = "Small" for = "DisableTLD">Disable subdomain removal</label>
+      </p>
+
+      <h4><label class = "main" for = "GenPasswd">Your generated password</label></h4>
+      <p><input id = "GenPasswd" name = "GenPasswd" type = "text"></p>
+						<br><input type = "submit" value = "Regenerate" id = "submit">
+					</div>
+
+    </form>
+
+  </div>
+</body>
+</html>
