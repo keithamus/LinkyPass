@@ -1,9 +1,9 @@
 {
   "name": "SuperChromePass",
   "description": "Generate secure, per-domain password based on an original master password, with the click of a button",
-  "version": "0.8",
-		"background_page": "background.html",
-		"options_page": "options.html",
+  "version": "0.9",
+		"background_page": "scp_background.html",
+		"options_page": "scp_options.html",
 		"update_url": "http://superchromepass.googlecode.com/files/update.xml",
   "permissions": [
 				"tabs", "http://*/*", "https://*/*"
@@ -11,14 +11,16 @@
 		"browser_action": {
 				"default_title": "SuperChromePass",
 				"default_icon": "icon_19.png",
-				"popup": "popup.html"
+				"popup": "scp_popup.html"
   },
 		"content_scripts": [{
 				"matches": ["http://*/*", "https://*/*"],
-				"js": ["contentscript.js"]
-  }],
+				"js": ["jquery.js","superchromepass.js","supergenpass.js"],
+				"css": ["scp.css","updateBar.css"]
+		}],
   "icons": {
     "128": "icon_128.png",
-				"19": "icon_19.png"
+				"19": "icon_19.png",
+				"16": "icon_16.png"
   }
 }

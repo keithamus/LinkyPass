@@ -1,0 +1,75 @@
+.superchromepass_button{
+	background:    -webkit-gradient(
+                 linear,
+                 left bottom,
+                 left top,
+                 from(#08ce08),
+                 to(#4ae64a)
+                ) !important;
+	border:        1px solid #19b319 !important;
+	text-align:    center !important;
+	color:         #fff !important;
+	padding:       0 !important;
+	font-family:   sans-serif !important;
+	font-size:     11px !important;
+	font-weight:   bold !important;
+	position:      absolute !important;
+	cursor:        pointer !important;
+	z-index:       99 !important;
+}
+
+.superchromepass_button.expanded{
+	height:        auto !important;
+}
+
+.superchromepass_button.corner{
+	border:        1px solid #19b319 !important;
+}
+
+.superchromepass_button ul{
+	margin:        0 !important;
+	padding:       0 !important;
+	list-style:    none !important;
+	color:         #fff !important;
+}
+
+.superchromepass_button li{
+	margin:        0 !important;
+	padding:       0 !important;
+	list-style:    none !important;
+	color:         #fff !important;
+	cursor:        pointer !important;
+	font-size:     11px !important;
+	line-height:   18px !important;
+}
+
+.superchromepass_button li:hover{
+	background:    rgba(0,0,0,0.15) !important;
+}
+
+.superchromepass_button input{
+	padding:       3px !important;
+	margin:        3px 6px !important;
+	width:         130px !important;
+	border:        1px solid #023b02 !important;
+	background:    #fff !important;
+	display:       block !important;
+	clear:         both !important;
+}
+.superchromepass_button input.good{
+	background:    #effcef !important;
+}
+.superchromepass_button input.bad{
+	background:    #ffe8ea !important;
+}
+
+.superchromepass_button p{
+	margin:        0 !important;
+	padding:       2px 0 !important;
+	text-align:    center !important;
+	font-weight:   bold !important;
+	font-size:     11px !important;
+	clear:         both !important;
+	display:       block !important;
+	line-height:   14px !important;
+}
