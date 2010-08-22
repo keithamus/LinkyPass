@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang = "en">
-
 	<head>
-
-		<style type = "text/css">
-
-			body{
+	<style type = "text/css">
+		body{
 				overflow:      visible;
 				width:         230px;
 				background:    white;
@@ -75,128 +72,166 @@
 				width:         30px;
 			}
 
+			#scp_list{
+				margin:        0 auto;
+				padding:       0;
+				list-style:    none;
+				color:         #fff;
+				background:    -webkit-gradient(
+																				linear,
+																				left bottom,
+																				left top,
+																				from(#08ce08),
+																				to(#4ae64a)
+																			);
+				width:         207px;
+				border-radius: 0 0 10px 10px;
+			}
+
+			#scp_list li{
+				margin:        0 !important;
+				padding:       0 !important;
+				list-style:    none !important;
+				color:         #fff !important;
+				cursor:        pointer !important;
+				font-size:     11px !important;
+				line-height:   18px !important;
+			}
+
+			#scp_list li:hover,#scp_list li.active{
+				background:    rgba(0,0,0,0.15) !important;
+			}
 		</style>
-		<script type="text/javascript" src="jquery-1.4.2.js"></script>
+		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="supergenpass.js"></script>
 		<script type = "text/javascript">
-			var bg = chrome.extension.getBackgroundPage();
-			var _passwordlength = 10;
+			$(document).ready(function(){
 
-			function init()
-			{
-
-				//Get the URL from the selected tab
-				chrome.tabs.getSelected(null,
-					function(tab)
+				//Ask our background page what to do:
+					chrome.extension.sendRequest({message: 'init'}, function(response)
 					{
-						document.getElementById('Domain').value = tab.url;
-						setTimeout(function(){SGPLocal();},0);
-					}
-				);
-
-				//Set the password length to the localstorage
-				if(localStorage['passwordlength']>4)
-				{
-					_passwordlength = localStorage['passwordlength'];
-				}
-
-				//If the password is stored locally in plain text, then apply it.
-				if (localStorage['password'] && localStorage['password'].length>1)
-				{
-					console.log('Got localStorage password');
-					document.getElementById('Passwd').value = localStorage['password'];
-				}
-				//If the password is stored for this session, then apply it.
-				else if (bg.session_password && bg.session_password.length>1)
-				{
-					console.log('Got sessionStorage password');
-					document.getElementById('Passwd').value = bg.session_password;
-				}
-				//As a last resort, we could check to see if the user added the password
-				// to the form, and then clicked our button
-				else
-				{
-					chrome.tabs.getSelected(null,function(tab)
+						//Our background page says we have multiple passes stored in the DB,
+						// we should show the names of those:
+						if(response.length>1)
 						{
-							chrome.tabs.sendRequest(tab.id,{type:'get'}, function(response)
-							{
-								if (response.value && response.value.length > 1)
-								{
-									console.log('Got password from web page');
-									document.getElementById('Passwd').value = response.value;
-									setTimeout(function(){SGPLocal();},0);
-								}
-							}
-							)
+							//Stretch our tab our and show the password options
+							$.each(response.passes,function(id, o){
+								$('#scp_list').append(
+									$('<li/>',
+									{
+										id: id,
+										text: o.name
+									}).click(function(){
+										var id = this.id;
+										chrome.extension.sendRequest(
+										{
+											message: 'request',
+											id: id,
+											disabletld: false
+										}, function(response){
+											scponepass(response,self,false,id)
+										});
+									})
+								);
+							});
 						}
-					);
-				}
 
-				//If the password hash is stored locally, then use it.
-				if (localStorage['passwordhash'] && localStorage['passwordhash'].length>1)
-				{
-					console.log('Got sessionStorage passwordhash');
-					document.getElementById('RememberPassHash').checked = 'checked';
-				}
+						//We've only got one password, and its stored in our background page, so lets
+						// just put that in our password field!
+						else if(response.password)
+						{
+							$('#GenPasswd').val(response.password);
+						}
 
-				//Focus the password field
-				document.getElementById('Passwd').focus();
-			}
-
-			//Open a DIV by id.
-			function OpenDiv(el) {
-				var more = document.getElementById(el);
-				if (more.style.display ==  'none') {
-					more.style.display = '';
-					document.getElementById(el+'pointer').className = 'down';
-				} else {
-					more.style.display = 'none';
-					document.getElementById(el+'pointer').className = '';
-				}
-				return false;
-			}
-
-			//The password can be applied to the tab
-			function ApplyPassToTab(Passwd) {
-				chrome.tabs.getSelected(null,function(tab) {
-						chrome.tabs.sendRequest(tab.id,{type:'set',value:Passwd})
+						//We don't have a password sent back to us, which means we need to ask for one:
+						else
+						{
+							if(response.pass && response.pass.length>1 && !response.hash)
+							{
+								$('#GenPasswd').val(response.pass);
+							}
+							//Its not, so we need to present a password box for the user:
+							else
+							{
+								$('#Passwd').focus();
+								$('#dscr').text('Please enter your password');
+							}
+						}
 					});
-			} //end ApplyPassToTab();
 
-			//Check, using the hash, to see if the password hash matches the password entered.
-			function PasswordChanged() {
-				document.getElementById('GenPasswd').value = '';
-				if (localStorage['passwordhash'] && localStorage['passwordhash'].length>0)
-				{
-					if (b64_md5(document.getElementById('Passwd').value) ==  localStorage['passwordhash'])
+					scponepass = function(response,self,tld,id)
 					{
-						document.getElementById('Passwd').style.borderColor = '#89DF00';
-						document.getElementById('Passwd').style.background = '#C7E892';
+						//We got a response, is it our password?
+						if(response.pass && response.pass.length>1 && !response.hash)
+						{
+							$('#GenPasswd').val(response.pass);
+						}
+						//Its not, so we need to present a password box for the user:
+						else
+						{
+							scpinput(response,self,tld,id);
+						}
 					}
-					else
+
+					scpinput = function(response,self,tld,id)
 					{
-						document.getElementById('Passwd').style.borderColor = '#EB3544';
-						document.getElementById('Passwd').style.background = '#F0B6BB';
+						$(self).append(
+								$('<input/>',{type: 'password',id: id,class: 'scp-pass'}).keyup(function(e)
+								{
+									if(response.hash)
+									{
+										if(b64_md5($(this).val()) == response.pass)
+										{
+											$(this).addClass('good').removeClass('bad');
+										}
+										else
+										{
+											$(this).addClass('bad').removeClass('good');
+										}
+									}
+									if(e.keyCode==13)
+									{
+										chrome.extension.sendRequest(
+										{
+											id: $(this).attr('id'),
+											message: 'request',
+											password: $(this).val(),
+											disabletld: tld
+										}, function(response)
+										{
+											//We got a response, is it our password?
+											if(response.pass && response.pass.length>1 && !response.hash)
+											{
+												input.val(response.pass);
+												scpclose(self);
+											}
+										});
+									}
+								}),
+								$('<p/>',{text: 'Enter Password'})
+							);
+						$(self).children('input').focus();
 					}
-				}
-			}
 
+					$('#domore').click(function(){$('#more').toggle();$('#domore span').toggleClass('down')});
 
+			});
 
   </script>
-  </head>
-<body onload = "init()">
+ </head>
+	<body>
 
   <div>
 
 				<h1 id = "title">SuperChromePass</h1>
 
-    <form onsubmit = "SGPLocal(null); return false;" action = "http://localhost:9/" method = "POST">
+    <form onsubmit = "SGPLocal(null); return false;" method = "POST">
 
-      <h4><label class = "main" for = "Passwd">Master Password:</label></h4>
-      <input id="Passwd" name="Passwd" type="password" onkeyup="PasswordChanged()" autofocus>
+      <h4><label class = "main" id="dscr" for = "Passwd">Master Password:</label></h4>
+      <input id="Passwd" name="Passwd" type="password" autofocus>
+						<ul id="scp_list"></ul>
 
-				<h1 onclick="OpenDiv('more')" id="domore" class="open"><span id = "morepointer"></span>Regenerate</h1>
+				<h1 id="domore" class="open"><span id = "morepointer"></span>Regenerate</h1>
 						<div id = "more" style = "display:none">
 
 						<h4><label class = "main" for = "Domain">Domain / URL</label></h4>
@@ -213,5 +248,5 @@
     </form>
 
   </div>
-</body>
+	</body>
 </html>
