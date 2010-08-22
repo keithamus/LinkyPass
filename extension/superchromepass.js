@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
 
-	$('input[type="password"]:not(:hidden)').each(function(){
+	makeSCP = (function(){
 
 		var passH = $(this).outerHeight(),
 		    passW = $(this).outerWidth(),
@@ -21,13 +21,39 @@ jQuery(document).ready(function($){
 			id = $(this).attr('id');
 		}
 
-		$(this).keypress(function(e){
+		$(this).keypress(function(e)
+		{
 
 			if(e.shiftKey && !e.altKey && e.ctrlKey && e.keyCode==16)
 			{
 				$('#scp-button-'+$(this).attr('id')).click();
 			}
+			if(e.keyCode == 13 && $('#scp-button-'+this.id).hasClass('expanded') &&
+						$('#scp-button-'+this.id).find('.active').length>0)
+			{
+				$('#scp-button-'+this.id).find('.active').click();
+			}
 
+		});
+
+		$(this).keyup(function(e)
+		{
+				el = $('#scp-button-'+this.id);
+				if(el.hasClass('expanded') && el.find('li').length>0)
+				{
+						if(e.keyCode == 40)
+						{
+							li = el.find('li.active').next().length>0?
+								el.find('li.active').next():el.find('li').first();
+							el.find('li').removeClass('active').filter(li).addClass('active');
+						}
+						else if(e.keyCode == 38)
+						{
+							li = el.find('li.active').prev().length>0?
+								el.find('li.active').prev():el.find('li').last();
+							el.find('li').removeClass('active').filter(li).addClass('active');
+						}
+				}
 		});
 
 		$('body').append(
@@ -103,6 +129,13 @@ jQuery(document).ready(function($){
 
 	});
 
+	$('input[type="password"]:not(:hidden)').live('focus',function(){
+		if(!this.id || $('#scp-button-'+this.id).length==0)
+		{
+			!$(this).hasClass('scp-pass') && makeSCP.call(this);
+		}
+	});
+
 	scpclose = function(id){
 		$(id).animate(
 		{
@@ -119,6 +152,7 @@ jQuery(document).ready(function($){
 		{
 			$(id).append( $('<b/>').text('p') );
 		}
+		$($(id).data('input')).focus();
 		return $(id);
 	}
 
@@ -134,7 +168,6 @@ jQuery(document).ready(function($){
 
 	scponepass = function(response,self,tld,id)
 	{
-		console.log(response);
 		//We got a response, is it our password?
 		if(response.pass && response.pass.length>1 && !response.hash)
 		{
@@ -152,7 +185,7 @@ jQuery(document).ready(function($){
 	scpinput = function(response,self,tld,id)
 	{
 		$(self).append(
-				$('<input/>',{type: 'password',id: id}).keyup(function(e)
+				$('<input/>',{type: 'password',id: id,class: 'scp-pass'}).keyup(function(e)
 				{
 					if(response.hash)
 					{
@@ -186,6 +219,7 @@ jQuery(document).ready(function($){
 				}),
 				$('<p/>',{text: 'Enter Password'})
 			);
+		$(self).children('input').focus();
 	}
 
 	$(window).resize(function(){
@@ -249,3 +283,8 @@ chrome.extension.sendRequest({message: 'versioncheck'}, function(response)
 				chrome.extension.sendRequest({message: 'versioncheck', notify: true});
 		}
 });
+
+if(!localStorage['notonload'])
+{
+	$('input[type="password"]:not(:hidden)').each(function(){makeSCP.call(this);});
+}
