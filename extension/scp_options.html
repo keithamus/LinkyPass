@@ -149,6 +149,32 @@
 
 			});
 
+			$('#notonload').click(function(){
+				var options = JSON.parse(localStorage['options'] || '{}');
+				if($(this).is(':checked'))
+				{
+					options.notonload = false;
+				}
+				else
+				{
+					options.notonload = true;
+				}
+				localStorage['options'] = JSON.stringify(options);
+			});
+
+			$('#key_key').keyup(function(e){
+				var options = JSON.parse(localStorage['options'] || '{}');
+				options.key_key=this.value;
+				localStorage['options'] = JSON.stringify(options);
+			});
+
+			var options = JSON.parse(localStorage['options'] || '{}');
+
+			$('#key_key').val(options.key_key || 'P');
+			options.notonload?
+				$('#notonload').removeAttr('checked','checked'):
+				$('#notonload').attr('checked','checked');
+
 		});
 
 	</script>
@@ -291,13 +317,22 @@
                      to(#c00)
                     );
 		}
-		#panel{
+		.panel{
 			border-radius:   30px;
 			padding:         0 145px;
 			border:          1px solid #000;
 			width:           610px;
 			margin:          20px 25px;
 			clear:           both;
+		}
+		#general{
+			width:           700px;
+			padding:         0 100px;
+		}
+		.panel hr{
+			border:          0;
+			border-bottom:   1px solid rgba(255,255,255,0.3);
+			border-top:      1px solid rgba(0,0,0,0.3);
 		}
 		.labels{
 			margin:          30px 0 5px 0;
@@ -536,7 +571,7 @@
 
 	<div style="clear: both"></div>
 
-	<div id="panel">
+	<div class="panel">
 		<div class="labels one">
 			<label for="password">Profile Name</label>
 			<label for="password">Password</label>
@@ -574,6 +609,20 @@
 
 		<button id="save">Save Password Profile</button>
 
+	</div>
+
+	<div class="panel" id="general">
+		<h3>General Options</h3>
+
+		<input type="checkbox" id="notonload" checked="checked">
+		<label for="notonload">Automatically add SuperChromePass buttons to all password fields when the page loads</label>
+
+		<hr>
+
+		<label for="key_key">Ctrl + Shift</label>
+		<input id="key_key" maxlength="1" type="text" style="width: 25px; font-weight: bold; text-align: center;">
+		<label for="key_key">Shortcut Combination (when inside a password box)</label>
+		<br><br>
 	</div>
 
 	<div id="about">
