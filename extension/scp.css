@@ -15,11 +15,12 @@
 	font-weight:   bold !important;
 	position:      absolute !important;
 	cursor:        pointer !important;
-	z-index:       99 !important;
+	z-index:       998 !important;
 }
 
 .superchromepass_button.expanded{
 	height:        auto !important;
+	z-index:       999 !important;
 }
 
 .superchromepass_button.corner{
