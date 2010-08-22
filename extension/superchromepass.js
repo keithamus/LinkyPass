@@ -1,4 +1,17 @@
-jQuery(document).ready(function($){
+$(document).ready(function(){
+
+	//Define options defaults.
+	var options = { key_key: 'P' };
+
+	//Go get real options
+	chrome.extension.sendRequest({message: 'options'}, function(response)
+	{
+		$.extend(options,response);
+		if(options && !options.notonload)
+		{
+			$('input[type="password"]:not(:hidden)').each(function(){makeSCP.call(this);});
+		}
+	});
 
 	makeSCP = (function(){
 
@@ -21,23 +34,19 @@ jQuery(document).ready(function($){
 			id = $(this).attr('id');
 		}
 
-		$(this).keypress(function(e)
-		{
-
-			if(e.shiftKey && !e.altKey && e.ctrlKey && e.keyCode==16)
-			{
-				$('#scp-button-'+$(this).attr('id')).click();
-			}
-			if(e.keyCode == 13 && $('#scp-button-'+this.id).hasClass('expanded') &&
-						$('#scp-button-'+this.id).find('.active').length>0)
-			{
-				$('#scp-button-'+this.id).find('.active').click();
-			}
-
-		});
-
 		$(this).keyup(function(e)
 		{
+				if(e.shiftKey && !e.altKey && e.ctrlKey && e.keyCode == options.key_key.charCodeAt(0))
+				{
+					$('#scp-button-'+$(this).attr('id')).click();
+				}
+
+				if(e.keyCode == 13 && $('#scp-button-'+this.id).hasClass('expanded') &&
+						$('#scp-button-'+this.id).find('.active').length>0)
+				{
+					$('#scp-button-'+this.id).find('.active').click();
+				}
+
 				el = $('#scp-button-'+this.id);
 				if(el.hasClass('expanded') && el.find('li').length>0)
 				{
@@ -283,8 +292,3 @@ chrome.extension.sendRequest({message: 'versioncheck'}, function(response)
 				chrome.extension.sendRequest({message: 'versioncheck', notify: true});
 		}
 });
-
-if(!localStorage['notonload'])
-{
-	$('input[type="password"]:not(:hidden)').each(function(){makeSCP.call(this);});
-}
