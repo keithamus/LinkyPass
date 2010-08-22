@@ -118,12 +118,18 @@ chrome.extension.onRequest.addListener(
 	{
 		var passes = JSON.parse(localStorage['passwords'] || '[]');
 		console.log(request);
+		console.log(sender);
 
-		//Our message was from the contentscript!
-		if(sender.tab)
+		//Our message has a tab id or extension id
+		if(sender.tab || sender.id)
 		{
+				//The content script is just asking for options
+			if(request.message == 'options')
+			{
+				sendResponse(JSON.parse(localStorage['options'] || '{}'));
+			}
 			//The content script is asking us what to do!
-			if (request.message == 'init' || request.message == 'request')
+			else if (request.message == 'init' || request.message == 'request')
 			{
 
 				//No passwords in db, so send a quick message to tell the page.
