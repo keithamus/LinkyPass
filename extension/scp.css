@@ -43,7 +43,7 @@
 	line-height:   18px !important;
 }
 
-.superchromepass_button li:hover{
+.superchromepass_button li:hover,.superchromepass_button li.active{
 	background:    rgba(0,0,0,0.15) !important;
 }
 
