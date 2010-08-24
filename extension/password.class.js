@@ -45,6 +45,7 @@ var Pass = {
 	 */
 	none: $.extend({},Password,
 	{
+		type: 'none',
 		input: '',
 		salt: function(){return null;},
 		password: function(pass)
@@ -70,6 +71,7 @@ var Pass = {
 	 */
 	hash: $.extend({},Password,
 	{
+		type: 'hash',
 		input: '',
 		password: function(pass)
 		{
@@ -99,6 +101,7 @@ var Pass = {
 	 */
 	session: $.extend({},Password,
 	{
+		type: 'session',
 		password: function(pass)
 		{
 			if(pass && pass.length>0)
@@ -116,6 +119,7 @@ var Pass = {
 	 */
 	always: $.extend({},Password,
 	{
+		type: 'always',
 		password: function() { return localStorage['password_'+this.id+'_password']; }
 	})
 
