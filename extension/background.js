@@ -28,15 +28,15 @@ chrome.extension.onRequest.addListener(
 				else if(passes.length==1 || (request.id && request.id.length>0))
 				{
 					id = parseInt(passes.length)==1?passes[0]:request.id;
-					Pass[localStorage['password_'+id+'_type']].id = id;
+					sendPass = Pass.init(id);
 
 					if(request.password && request.password.length>0)
 					{
 						//We've been sent a password, so we should apply it (potentially).
-						Pass[localStorage['password_'+id+'_type']].password(request.password);
+						sendPass.password(request.password);
 					}
 					//Send back a generated password
-					sendResponse(Pass[localStorage['password_'+id+'_type']].generate(sender.tab.url,request.disabletld));
+					sendResponse(sendPass.generate(sender.tab.url,request.disabletld));
 				}
 				//We've got lots of passwords, so present the user with a list of selections:
 				else if(passes.length>1 && request.message=='init')
@@ -49,7 +49,7 @@ chrome.extension.onRequest.addListener(
 							id: id,
 							name: localStorage['password_'+id+'_name'],
 							hash: localStorage['password_'+id+'_type']=='hash'?
-								localStorage['password_'+v+'_password']:false
+								localStorage['password_'+id+'_password']:false
 						}
 					});
 					sendResponse({length: passes.length, passes: response})
