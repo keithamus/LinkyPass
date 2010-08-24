@@ -92,7 +92,7 @@
 																				to(#4ae64a)
 																			);
 				width:         207px;
-				border-radius: 0 0 10px 10px;
+				border-radius: 10px;
 			}
 
 			#scp_list li{
@@ -105,122 +105,47 @@
 				line-height:   18px !important;
 			}
 
+			#scp_list li:first-child{
+				border-radius: 10px 10px 0 0;
+			}
+
+			#scp_list li:last-child{
+				border-radius: 0 0 10px 10px;
+			}
+
 			#scp_list li:hover,#scp_list li.active{
 				background:    rgba(0,0,0,0.15) !important;
 			}
 		</style>
 		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="password.class.js"></script>
 		<script type="text/javascript" src="supergenpass.js"></script>
 		<script type = "text/javascript">
 			$(document).ready(function(){
+				var domain,
+				    passes = JSON.parse(localStorage['passwords'] || '[]');
 
-				//Ask our background page what to do:
-					chrome.extension.sendRequest({message: 'init'}, function(response)
-					{
-						//Our background page says we have multiple passes stored in the DB,
-						// we should show the names of those:
-						if(response.length>1)
-						{
-							//Stretch our tab our and show the password options
-							$.each(response.passes,function(id, o){
+				//Get the URL from the selected tab
+				chrome.tabs.getSelected(null,function(tab){ passes = tab.url;});
+
+				if(passes.length==1)
+				{
+
+				}
+				else
+				{
+						$.each(passes,function(i,id){
 								$('#scp_list').append(
 									$('<li/>',
 									{
 										id: id,
-										text: o.name
+										text: localStorage['password_'+id+'_name']
 									}).click(function(){
 										var id = this.id;
-										chrome.extension.sendRequest(
-										{
-											message: 'request',
-											id: id,
-											disabletld: false
-										}, function(response){
-											scponepass(response,self,false,id)
-										});
 									})
 								);
-							});
-						}
-
-						//We've only got one password, and its stored in our background page, so lets
-						// just put that in our password field!
-						else if(response.password)
-						{
-							$('#GenPasswd').val(response.password);
-						}
-
-						//We don't have a password sent back to us, which means we need to ask for one:
-						else
-						{
-							if(response.pass && response.pass.length>1 && !response.hash)
-							{
-								$('#GenPasswd').val(response.pass);
-							}
-							//Its not, so we need to present a password box for the user:
-							else
-							{
-								$('#Passwd').focus();
-								$('#dscr').text('Please enter your password');
-							}
-						}
-					});
-
-					scponepass = function(response,self,tld,id)
-					{
-						//We got a response, is it our password?
-						if(response.pass && response.pass.length>1 && !response.hash)
-						{
-							$('#GenPasswd').val(response.pass);
-						}
-						//Its not, so we need to present a password box for the user:
-						else
-						{
-							scpinput(response,self,tld,id);
-						}
-					}
-
-					scpinput = function(response,self,tld,id)
-					{
-						$(self).append(
-								$('<input/>',{type: 'password',id: id,class: 'scp-pass'}).keyup(function(e)
-								{
-									if(response.hash)
-									{
-										if(b64_md5($(this).val()) == response.pass)
-										{
-											$(this).addClass('good').removeClass('bad');
-										}
-										else
-										{
-											$(this).addClass('bad').removeClass('good');
-										}
-									}
-									if(e.keyCode==13)
-									{
-										chrome.extension.sendRequest(
-										{
-											id: $(this).attr('id'),
-											message: 'request',
-											password: $(this).val(),
-											disabletld: tld
-										}, function(response)
-										{
-											//We got a response, is it our password?
-											if(response.pass && response.pass.length>1 && !response.hash)
-											{
-												input.val(response.pass);
-												scpclose(self);
-											}
-										});
-									}
-								}),
-								$('<p/>',{text: 'Enter Password'})
-							);
-						$(self).children('input').focus();
-					}
-
-					$('#domore').click(function(){$('#more').toggle();$('#domore span').toggleClass('down')});
+						});
+				}
 
 			});
 
@@ -232,15 +157,14 @@
 
 				<h1 id = "title">SuperChromePass</h1>
 
+				<ul id="scp_list"></ul>
+
     <form onsubmit = "SGPLocal(null); return false;" method = "POST">
 
       <h4><label class = "main" id="dscr" for = "Passwd">Master Password:</label></h4>
       <input id="Passwd" name="Passwd" type="password" autofocus>
-						<ul id="scp_list"></ul>
 
-				<h1 id="domore" class="open"><span id = "morepointer"></span>Regenerate</h1>
-						<div id = "more" style = "display:none">
-
+				<div id="generated">
 						<h4><label class = "main" for = "Domain">Domain / URL</label></h4>
       <p>
         <input id = "Domain" name = "Domain" type = "text" onchange = "document.getElementById('GenPasswd').value = '';"><br>
