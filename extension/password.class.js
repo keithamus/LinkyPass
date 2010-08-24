@@ -28,6 +28,17 @@ var Password = {
 var Pass = {
 
 	/*
+	* Pass.init
+	*
+	* Initialises correct password class
+	*/
+	init: function(id)
+	{
+		Pass[localStorage['password_'+id+'_type']].id = id;
+		return Pass[localStorage['password_'+id+'_type']];
+	},
+
+	/*
 	 * Pass.none
 	 *
 	 * Extend Password to give basic functionality,
