@@ -108,7 +108,7 @@ var Pass = {
 			{
 				sessionStorage['password_'+this.id+'_password'] = pass;
 			}
-			return sessionStorage['password_'+this.id+'_password'];
+			return sessionStorage['password_'+this.id+'_password'] || false;
 		}
 	}),
 
