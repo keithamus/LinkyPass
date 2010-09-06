@@ -15,7 +15,7 @@
 						border-bottom: 1px solid #b6bac0 !important;
 						line-height:   26px !important;
 						position:      absolute !important;
-						top:           -36px !important;
+						top:           -36px;
 						left:          0 !important;
 }
 #update_bar img{
