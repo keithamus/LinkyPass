@@ -7,12 +7,11 @@
 				width:         230px;
 				background:    white;
 				color:         black;
+				font-family:   sans-serif;
 			}
-
-			*{
+			body,p,li,ul,div,h1,label{
 				margin:        0 auto;
 				padding:       0;
-				font-family:   sans-serif;
 			}
 
 			div{
@@ -25,8 +24,13 @@
 				padding:       2px 10px;
 				margin:        5px;
 				text-shadow:   0 1px 1px #fff;
-				background:    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAeCAIAAABi9+OQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB9JREFUeNpievbsGRMDAwPT////UTBMjBg5MvQDBBgA2EY+s1m0K/IAAAAASUVORK5CYII%3D)
-				 repeat-x top #e6e6e6;
+				background:    -webkit-gradient(
+																				linear,
+																				left bottom,
+																				left top,
+																				from(#d9d9d9),
+																				to(#e6e6e6)
+																			);
 				border:        1px solid #bdbdbd;
 				color:         #6e6e6e
 			}
@@ -50,6 +54,10 @@
 					no-repeat;
 			}
 
+			p{
+				font-size:     13px;
+			}
+
 			p.left{
 				text-align:    left;
 			}
@@ -60,16 +68,51 @@
 			}
 
 			label.main{
-				width:         100%;
+				width:         210px;
+				padding:       2px 0;
 				display:       block;
 				text-align:    center;
+				border:        1px solid #bdbdbd;
+				border-bottom: 0;
+				border-radius: 10px 10px 0 0;
+				background:    -webkit-gradient(
+																				linear,
+																				left bottom,
+																				left top,
+																				from(#d9d9d9),
+																				to(#e6e6e6)
+																			);
+				margin-top:    10px;
+			}
+
+			#master_input label{
+				background:    -webkit-gradient(
+																				linear,
+																				left bottom,
+																				left top,
+																				from(#08ce08),
+																				to(#4ae64a)
+																			);
+				border-color:  #19b319;
+			}
+
+			#master_input input.good{
+				background:    #effcef !important;
+			}
+
+			#master_input input.bad{
+				background:    #ffe8ea !important;
 			}
 
 			input[type = text],input[type = password],input[type = submit]{
-				width:         90%;
+				width:         204px;
+				margin:        0;
+				padding:       3px;
+				border:        1px solid #aaa;
+				margin-left:   1px;
 			}
 
-			#GenPasswd{
+			#genpasswd{
 				font-family:    monospace;
 				letter-spacing: 3px;
 				font-weight:    bold;
@@ -113,39 +156,162 @@
 				border-radius: 0 0 10px 10px;
 			}
 
-			#scp_list li:hover,#scp_list li.active{
+			#scp_list li:hover,#scp_list li.over{
 				background:    rgba(0,0,0,0.15) !important;
+			}
+
+			#scp_list li.active{
+				background:    rgba(255,255,255,0.5) !important;
+				font-weight:   bold;
+			}
+
+			#regen{
+				margin:          10px 0;
+				width:           200px;
+				padding:         8px 0;
+				background:      -webkit-gradient(
+																						linear,
+																						left bottom,
+																						left top,
+																						from(#08ce08),
+																						to(#4ae64a)
+																					);
+				-webkit-box-shadow: 1px 1px 0 rgba(255,255,255,0.75);
+				border-radius:   40px;
+				border:          1px solid #19b319;
+				font-size:       14px;
+				font-weight:     bold;
+				color:           #023b02;
+			}
+
+			#regen:hover{
+				background:      -webkit-gradient(
+																						linear,
+																						left bottom,
+																						left top,
+																						from(#09ef09),
+																						to(#68ea68)
+																					);
+			}
+
+			#regen:focus, #regen:active{
+				background:      -webkit-gradient(
+																						linear,
+																						left bottom,
+																						left top,
+																						from(#4ae64a),
+																						to(#08ce08)
+																					);
+			}
+
+			#regen:disabled, #regen:focus:disabled, #regen:active:disabled, #regen:hover:disabled{
+				background:      -webkit-gradient(
+																						linear,
+																						left bottom,
+																						left top,
+																						from(#34a556),
+																						to(#34a556)
+																					);
+				border-color:    #527a52;
 			}
 		</style>
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="password.class.js"></script>
 		<script type="text/javascript" src="supergenpass.js"></script>
 		<script type = "text/javascript">
+			var passid,
+							sendPass,
+				   passes = JSON.parse(localStorage['passwords'] || '[]');
+
+			function genPass(passid)
+			{
+				sendPass = Pass.init(passid);
+				pass = sendPass.generate($('#domain').text(),$('#disabletld').is('checked'));
+				$('#genpasswd').val(pass.pass);
+				$('#generated').slideDown(250);
+				$('#regen').removeAttr('disabled');
+			}
+
 			$(document).ready(function(){
-				var domain,
-				    passes = JSON.parse(localStorage['passwords'] || '[]');
 
 				//Get the URL from the selected tab
-				chrome.tabs.getSelected(null,function(tab){ passes = tab.url;});
+				chrome.tabs.getSelected(null,function(tab){
 
-				if(passes.length==1)
-				{
+					$('#domain').text(gp2_process_uri(tab.url,false));
 
-				}
-				else
-				{
-						$.each(passes,function(i,id){
-								$('#scp_list').append(
-									$('<li/>',
-									{
-										id: id,
-										text: localStorage['password_'+id+'_name']
-									}).click(function(){
-										var id = this.id;
-									})
-								);
-						});
-				}
+					if(passes.length==1)
+					{
+							genPass(passes[0]);
+					}
+					else
+					{
+							$.each(passes,function(i,id){
+									$('#scp_list').append(
+										$('<li/>',
+										{
+											id: id,
+											text: localStorage['password_'+id+'_name']
+										}).click(function(){
+											$('#genpasswd').val('');
+											passid = this.id;
+											$(this).siblings().removeClass('active');
+											$(this).addClass('active');
+											sendPass = Pass.init(passid);
+											//We need a password input box!
+											if(sendPass.password()===false || sendPass.password()=='')
+											{
+													$('#master_input').slideDown(250);
+													$('#password').focus().select();
+											}
+											else
+											{
+													$('#master_input').slideUp(250);
+													genPass(passid);
+											}
+										})
+									);
+							});
+					}
+
+				});
+
+				$('#Passwd').keyup(function(e){if(e.keyCode==13){$('#regen').click();}});
+
+				$('#genpasswd').hover(
+					function(){$(this).get(0).type = 'text'},
+					function(){$(this).get(0).type = 'password'}
+				);
+
+				$('#regen').attr('disabled','disabled').click(function(){genPass(passid);});
+
+				$('body').keyup(function(e){
+						if(e.keyCode==40)
+						{
+								next = $('#scp_list li.over').next().length>0?
+										$('#scp_list li.over').next():$('#scp_list li').first();
+								$('#scp_list li').removeClass('over').filter(next).addClass('over');
+						}
+						else if(e.keyCode==38)
+						{
+								prev = $('#scp_list li.over').prev().length>0?
+										$('#scp_list li.over').prev():$('#scp_list li').last();
+								$('#scp_list li').removeClass('over').filter(prev).addClass('over');
+						}
+						else if(e.keyCode==13)
+						{
+								$('#scp_list .over').click();
+								return false;
+						}
+				});
+
+				$('#password').keydown(function(e){
+					if(e.keyCode == 13)
+					{
+						sendPass.password($(this).val());
+						genPass($('#scp_list .active').attr('id'));
+						return false;
+					}
+				});
 
 			});
 
@@ -153,31 +319,30 @@
  </head>
 	<body>
 
-  <div>
+		<div>
 
-				<h1 id = "title">SuperChromePass</h1>
+				<h1 id="domain">SuperChromePass</h1>
+
+				<div id="disableltdbox">
+					<input id="disabletld" type="checkbox">
+					<label for="disabletld">Disable subdomain removal</label>
+				</div>
 
 				<ul id="scp_list"></ul>
 
-    <form onsubmit = "SGPLocal(null); return false;" method = "POST">
+	   <div id="master_input" style="display: none">
+						<label class="main" id="dscr" for="Passwd">Master Password:</label>
+						<input id="password" type="password">
+				</div>
 
-      <h4><label class = "main" id="dscr" for = "Passwd">Master Password:</label></h4>
-      <input id="Passwd" name="Passwd" type="password" autofocus>
+				<div id="generated" style="display: none">
 
-				<div id="generated">
-						<h4><label class = "main" for = "Domain">Domain / URL</label></h4>
-      <p>
-        <input id = "Domain" name = "Domain" type = "text" onchange = "document.getElementById('GenPasswd').value = '';"><br>
-        <input id = "DisableTLD" name = "DisableTLD" type = "checkbox" onchange = "document.getElementById('GenPasswd').value = '';"> <label id = "Small" for = "DisableTLD">Disable subdomain removal</label>
-      </p>
+						<label class="main" for="genpasswd">Your generated password</label>
+						<input id="genpasswd" type="password">
+						<button id="regen">Regenerate</button>
+				</div>
 
-      <h4><label class = "main" for = "GenPasswd">Your generated password</label></h4>
-      <p><input id = "GenPasswd" name = "GenPasswd" type = "text"></p>
-						<br><input type = "submit" value = "Regenerate" id = "submit">
-					</div>
+		</div>
 
-    </form>
-
-  </div>
 	</body>
 </html>

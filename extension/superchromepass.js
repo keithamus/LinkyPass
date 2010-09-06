@@ -224,6 +224,7 @@ $(document).ready(function(){
 								scpclose(self);
 							}
 						});
+						return false;
 					}
 				}),
 				$('<p/>',{text: 'Enter Password'})
