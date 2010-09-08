@@ -34,8 +34,10 @@ var Pass = {
 	*/
 	init: function(id)
 	{
-		Pass[localStorage['password_'+id+'_type']].id = id;
-		return Pass[localStorage['password_'+id+'_type']];
+		Pass[localStorage['password_'+id+'_type']]?
+			Pass[localStorage['password_'+id+'_type']].id = id:
+			Pass.none.id = id;
+		return Pass[localStorage['password_'+id+'_type']] || Pass.none;
 	},
 
 	/*
@@ -58,7 +60,7 @@ var Pass = {
 		},
 		generate: function(url,disabletld)
 		{
-			var spg = SGPLocal(this.input, url, disabletld, this.length(), this.salt());
+			var spg = SGPLocal(this.input, url, disabletld, this.length(), null);
 			this.input = '';
 			return spg;
 		}
@@ -89,7 +91,7 @@ var Pass = {
 			}
 			else
 			{
-				return {pass: localStorage['password_'+id+'_password'], hash: true }
+				return {pass: localStorage['password_'+this.id+'_password'], hash: true }
 			}
 		}
 	}),
