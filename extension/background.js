@@ -1,5 +1,5 @@
 //Get our passwords
-var v = 0.9;
+var v = 1.0;
 
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse)
@@ -62,7 +62,7 @@ chrome.extension.onRequest.addListener(
 				{
 					if(request.notify)
 					{
-						localStorage['version'] = v;
+						localStorage['version'] = v.toFixed(1);
 					}
 					else
 					{
@@ -70,8 +70,8 @@ chrome.extension.onRequest.addListener(
 						sendResponse(
 						{
 							notify: true,
-							message: 'SuperChromePass has been updated to the latest version ('+v+'). '+
-								'Click the options button for more:'
+							message: 'SuperChromePass has been updated to the latest version ('+
+							v.toFixed(1).toString()+'). Click the options button for more:'
 						});
 					}
 				}
