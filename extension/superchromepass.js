@@ -226,7 +226,14 @@ $(document).ready(function(){
 						});
 						return false;
 					}
-				}),
+          e.stopImmediatePropagation();
+          return true;
+				}).
+        //Stop the password box from returning any events to potentially malicious scripts!
+        bind('blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error',
+        function(e){
+          alert('This website has attempted to steal the contents of the SCP password box!');
+          e.stopImmediatePropagation();return true}),
 				$('<p/>',{text: 'Enter Password'})
 			);
 		$(self).children('input').focus();
