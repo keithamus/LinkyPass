@@ -106,11 +106,23 @@ var Pass = {
 		type: 'session',
 		password: function(pass)
 		{
+      //While localStorage is extension wide, sessionStorage is only process wide
+      // so the most stable place to get it is the background page. So pull out
+      // the session storage from background:
+      var background = false;
+      if(chrome && chrome.extension && chrome.extension.getBackgroundPage)
+      {
+        var background = chrome.extension.getBackgroundPage();
+      }
 			if(pass && pass.length>0)
 			{
-				sessionStorage['password_'+this.id+'_password'] = pass;
+        background?
+          background.sessionStorage['password_'+this.id+'_password'] = pass:
+          sessionStorage['password_'+this.id+'_password'] = pass;
 			}
-			return sessionStorage['password_'+this.id+'_password'] || false;
+			return background?
+        background.sessionStorage['password_'+this.id+'_password'] || false:
+        sessionStorage['password_'+this.id+'_password'] || false;
 		}
 	}),
 
