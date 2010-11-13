@@ -1,7 +1,7 @@
 {
   "name": "SuperChromePass",
   "description": "Generate secure, per-domain password based on an original master password, with the click of a button",
-  "version": "1.0",
+  "version": "1.1",
 		"background_page": "scp_background.html",
 		"options_page": "scp_options.html",
 		"update_url": "http://superchromepass.googlecode.com/files/update.xml",
