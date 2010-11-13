@@ -5,6 +5,8 @@ chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse)
 	{
 		var passes = JSON.parse(localStorage['passwords'] || '[]');
+    
+    console.log(request,sender,sendResponse);
 
 		//Our message has a tab id or extension id
 		if(sender.tab || sender.id)
@@ -54,6 +56,13 @@ chrome.extension.onRequest.addListener(
 					});
 					sendResponse({length: passes.length, passes: response})
 				}
+        //Add a catch for when there are no profiles but a password needs generating
+        else if(passes.length==0 && request.message=='request')
+        {
+          sendPass = Pass.none;
+          sendPass.password(request.password);
+          sendResponse(sendPass.generate(sender.tab.url,request.disabletld));
+        }
 			}
 			else if(request.message == 'versioncheck')
 			{
