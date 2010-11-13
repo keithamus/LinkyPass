@@ -1,5 +1,5 @@
 //Get our passwords
-var v = 1.0;
+var v = 1.1;
 
 chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse)
