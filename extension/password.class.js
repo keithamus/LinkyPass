@@ -87,7 +87,9 @@ var Pass = {
 		{
 			if(this.input.length>0)
 			{
-				return SGPLocal(this.input, url, disabletld, this.length(), this.salt());
+				var sgp = SGPLocal(this.input, url, disabletld, this.length(), this.salt());
+        this.input = '';
+        return sgp;
 			}
 			else
 			{
