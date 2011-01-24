@@ -162,6 +162,10 @@
 				localStorage['options'] = JSON.stringify(options);
 			});
 
+			$('#alwayssubdomains').blur(function(){
+				localStorage['alwayssubdomains'] = $(this).val();
+			});
+
 			$('#key_key').keyup(function(e){
 				var options = JSON.parse(localStorage['options'] || '{}');
 				options.key_key=this.value;
@@ -174,6 +178,9 @@
 			options.notonload?
 				$('#notonload').removeAttr('checked','checked'):
 				$('#notonload').attr('checked','checked');
+
+			var alwayssubdomains = localStorage['alwayssubdomains'];
+			if (alwayssubdomains) $('#alwayssubdomains').val(alwayssubdomains);
 
 		});
 
@@ -633,6 +640,13 @@
 		<input id="key_key" maxlength="1" type="text" style="width: 25px; font-weight: bold; text-align: center;">
 		<label for="key_key">Shortcut Combination (when inside a password box)</label>
 		<br><br>
+
+		<hr>
+		<label for="alwayssubdomains">Always Use Subdomains for these domains, comma-separated list <br/>(ex: google.com, yahoo.com)</label>
+		<br/>
+		<textarea id="alwayssubdomains" type="text" style="width: 80%; font-weight:bold;"></textarea>
+		<br><br>
+
 	</div>
 
 	<div id="about">
