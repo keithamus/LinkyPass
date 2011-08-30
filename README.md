@@ -10,4 +10,4 @@ So why use SuperChromePass? Well, being a chrome extension, SuperChromePass bene
 Screenshots
 -----------
 
-[http://superchromepass.googlecode.com/files/superchromepass.png](http://superchromepass.googlecode.com/files/superchromepass.png)
+![http://superchromepass.googlecode.com/files/superchromepass.png](http://superchromepass.googlecode.com/files/superchromepass.png)
