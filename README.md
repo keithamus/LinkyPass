@@ -7,6 +7,8 @@ When you're not able to use SuperChromePass, you can still use the tools availab
 
 So why use SuperChromePass? Well, being a chrome extension, SuperChromePass benefits from the enhanced security between tab and browser in Google Chrome. A website would not be able to detect any information placed in SuperChromePass, which they may be able to with SuperGenPass.
 
+Install SuperChromePass by [clicking here](https://github.com/keithamus/SuperChromePass/raw/develop/SuperChromePass.crx).
+
 Screenshots
 -----------
 
