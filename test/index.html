@@ -3,21 +3,25 @@
     <head>
         <meta charset="utf-8">
         <title>Mocha Tests</title>
-        <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
+        <link rel="stylesheet" href="bower_components/mocha/mocha.css" />
     </head>
     <body>
         <div id="mocha"></div>
-        <script src="../bower_components/mocha/mocha.js"></script>
-        <script src="../bower_components/chai/chai.js"></script>
+        <script src="bower_components/mocha/mocha.js"></script>
+        <script src="bower_components/chai/chai.js"></script>
+        <script src="bower_components/sinonjs/sinon.js"></script>
         <script>mocha.setup('bdd')</script>
         <script>chai.should()</script>
 
-        <script src="../extension/supergenpass.js"></script>
-        <script src="supergenpass.test.js"></script>
+        <script src="fakeChomeApi.js"></script>
+        <script src="../extension/js/bcrypt.js"></script>
+        <script src="../extension/js/supergenpass.js"></script>
+        <script src="../extension/js/password.class.js"></script>
+        <script src="password.class.test.js"></script>
 
         <script>
             mocha.checkLeaks();
-            mocha.globals(['jQuery']);
+            mocha.globals(['Zepto', 'Password', 'script*']);
             mocha.run();
         </script>
 
