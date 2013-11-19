@@ -1,0 +1,225 @@
+@font-face {
+    font-family: icons;
+    src: url('../font/icons.eot?30802695');
+    src: url('../font/icons.eot?30802695#iefix') format('embedded-opentype'),
+       url('../font/icons.woff?30802695') format('woff'),
+       url('../font/icons.ttf?30802695') format('truetype'),
+       url('../font/icons.svg?30802695#icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ic {
+    font-family: icons;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em;
+    font-size: 1.4em;
+    color: rgb(43, 62, 81);
+}
+.ic-visible:before { content: '\e800'; } /* '' */
+.ic-hidden:before  { content: '\e801'; } /* '' */
+.ic-pass:before    { content: '\e802'; } /* '' */
+.ic-domain:before  { content: '\e803'; } /* '' */
+.ic-ok:before      { content: '\e804'; } /* '' */
+.ic-invalid:before { content: '\e805'; } /* '' */
+.ic-valid:before   { content: '\e806'; } /* '' */
+.ic-stealth:before { content: '\e807'; } /* '' */
+.ic-number:before  { content: '\e808'; } /* '' */
+.ic-name:before    { content: '\e809'; } /* '' */
+.ic-hint:before    { content: '\e810'; } /* '' */
+
+html {
+    background: white;
+}
+
+body {
+    background: rgb(236, 240, 241);
+    color: rgb(43, 62, 81);
+}
+body, p, li, ul, div, h1, label, input, button {
+    margin: 0 auto;
+    padding: 0;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 100;
+}
+
+form {
+    display: block;
+    clear: both;
+}
+
+form:before, body:before .fld:before,
+form:after, body:after .fld:after {
+    display: table;
+    content: '';
+    clear: both;
+}
+
+h1 {
+    padding: 10px;
+    font-size: 19px;
+    background: rgb(43, 62, 81);
+    color: rgb(236, 240, 241);
+    text-align: center;
+    position: relative;
+}
+
+h1 img {
+    position: absolute;
+    margin-top: 2px;
+    margin-left: -25px;
+}
+
+.panel {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    width: 900px;
+    margin: 20px auto;
+}
+
+.panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6 {
+    margin-top: 0;
+}
+
+.fld {
+    display: inline-block;
+    margin: 10px 20px;
+    padding: 2px;
+    min-height: 25px;
+    min-width: 202px;
+}
+
+.fld-input {
+    border: 2px solid rgb(85, 98, 112);
+    background: white;
+}
+
+.fld-input .ic {
+    position: absolute;
+    cursor: pointer;
+}
+
+.fld-input input {
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    height: 29px;
+    width: 100%;
+    margin: -2px 0 -2px 2px;
+    padding: 0 5px;
+    box-sizing: border-box;
+}
+
+.fld-input .ic + input {
+    padding-left: 30px;
+}
+
+.fld-input.invalid {
+    color: rgb(194, 56, 36);
+    border-color: rgb(194, 56, 36);
+}
+
+.fld-input.valid {
+    color: rgb(26, 175, 93);
+    border-color: rgb(26, 175, 93);
+}
+
+.fld-input.invalid .ic:before {
+    color: rgb(194, 56, 36);
+    content: '\e805';
+}
+
+.fld-input.valid .ic:before {
+    color: rgb(26, 175, 93);
+    content: '\e806';
+}
+
+.fld-checkbox input {
+    -webkit-appearance: none;
+    border: 2px solid rgb(85, 98, 112);
+    color: rgb(85, 98, 112);
+    background: white;
+    outline: 0;
+    height: 29px;
+    width: 29px;
+    margin: 0 0 0 -2px;
+    box-sizing: border-box;
+    display: inline-block;
+    float: left;
+}
+
+.fld-checkbox input:checked:after {
+    font-family: icons;
+    content: '\e804';
+    display: block;
+    font-size: 18px;
+    line-height: 27px;
+    width: 26px;
+    text-align: center;
+}
+
+.fld-checkbox span {
+    display: inline-block;
+    padding: 0 10px;
+    height: 29px;
+    line-height: 29px;
+}
+
+button {
+    -webkit-appearance: none;
+    display: block;
+    border-radius: 8px;
+    border: 0;
+    color: rgb(236, 240, 241);
+    background: rgb(34, 127, 187);
+    padding: 10px;
+    margin: 10px 20px;
+    outline: 0;
+}
+
+button:hover {
+    background: rgb(44, 151, 222);
+}
+
+button:active, button:focus {
+    background: rgb(30, 120, 180);
+}
+
+form button[type=submit] {
+    background: rgb(26, 175, 93);
+}
+
+
+form button[type=submit]:hover {
+    background: rgb(30, 206, 109);
+}
+
+form button[type=submit]:active, form button[type=submit]:focus {
+    background: rgb(20, 170, 90);
+}
+
+.ic ~ .hint {
+    display: none;
+    background: rgb(236, 240, 241);
+    position: absolute;
+    border: 1px solid rgb(43, 62, 81);
+    padding: 3px;
+    font-size: 14px;
+    max-width: 400px;
+}
+
+.ic:hover ~ .hint {
+    display: block;
+}

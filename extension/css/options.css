@@ -1,0 +1,127 @@
+html {
+    background: rgb(236, 240, 241);
+}
+
+.fld-input {
+    width: 240px;
+}
+
+.fld-checkbox {
+    display: block;
+}
+
+.password-preview {
+    width: 530px;
+    margin: 20px auto;
+}
+
+.password-preview h4 {
+    margin: 0;
+}
+
+.password-preview p {
+    margin-left: 20px;
+}
+
+.password-preview .domain        { color: rgb(245, 157, 0)  }
+.password-preview .pass          { color: rgb(156, 86, 184) }
+.password-preview .stealth       { color: rgb(233, 75, 53)  }
+.password-preview .generatedPass { color: rgb(26, 175, 93)  }
+
+.fld-range {
+    position: relative;
+}
+
+.fld-range input {
+    -webkit-appearance: none;
+    height: 8px;
+    background: #ddd;
+    border-radius: 8px;
+    outline: none;
+    margin-top: -3px;
+    min-width: 200px;
+}
+
+.fld-range input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-radius: 8px;
+    width: 15px;
+    height: 15px;
+    background: rgb(34, 127, 187);
+    cursor: pointer;
+}
+
+.fld-range input::-webkit-slider-thumb:hover {
+    background: rgb(44, 151, 222);
+}
+
+.fld-range input::-webkit-slider-thumb:active,
+.fld-range input::-webkit-slider-thumb:focus {
+    background: rgb(30, 120, 180);
+}
+
+.fld-range .range-value {
+    border: 2px solid black;
+    content: '' attr(data-value);
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: rgb(43, 62, 81);
+    text-align: center;
+    background: white;
+    position: absolute;
+    top: -33px;
+    margin-left: 10px;
+    display: none;
+}
+
+.fld-range input:focus + .range-value {
+    display: block;
+}
+
+.fld-range .range-value:after {
+    border: 2px solid black;
+    border-color: transparent black black transparent;
+    -webkit-transform: rotate(45deg);
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: white;
+    position: absolute;
+    top: 25px;
+    left: 10px;
+    z-index: 1;
+}
+
+table {
+    padding: 0;
+    width: 100%;
+    /*border-collapse: collapse;*/
+    border: 1px solid rgb(127, 140, 141);
+    border-radius: 8px;
+    border-spacing: 0;
+}
+
+thead { border-radius: 8px; }
+thead th:first-child { border-top-left-radius: 8px; }
+thead th:last-child { border-top-right-radius: 8px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 8px; }
+tbody tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+
+th {
+    background: rgb(223, 228, 231);
+    padding: 10px;
+}
+
+td, td {
+    text-align: center;
+}
+
+tbody tr:nth-child(even) td {
+    background: rgb(246, 250, 251);
+}
+
+table .ic {
+    color: rgb(25, 126, 189)
+}

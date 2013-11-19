@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <link rel="stylesheet" href="css/common.css"></style>
+        <link rel="stylesheet" href="css/popup.css"></style>
+    </head>
+    <body>
+        <h1>
+            <img src="icon_19.png">
+            <span id="title">LinkyPass</span>
+        </h1>
+        <ul id="password_list" class="popupPage"></ul>
+        <form id="password_gen" class="popupPage hidden">
+
+            <label class="fld fld-input">
+                <i class="ic ic-domain" title="Domain name"></i>
+                <input id="domain" placeholder="Domain name">
+            </label>
+
+            <label class="fld fld-checkbox" id="fld-trimdomain">
+                <input id="trimdomain" type="checkbox" checked>
+                <span>Trim domain name</span>
+            </label>
+
+            <label class="fld fld-input">
+                <i class="ic ic-pass" class="Master password"></i>
+                <input id="password" type="password"  placeholder="Master password" autofocus>
+            </label>
+
+            <label class="fld fld-input">
+                <input id="generated_password" type="password" placeholder="Generated password">
+            </label>
+
+            <button type="submit" id="regen">Regenerate</button>
+
+        </form>
+        <script src="bower_components/zepto/zepto.js"></script>
+        <script src="js/bcrypt.js"></script>
+        <script src="js/supergenpass.js"></script>
+        <script src="js/password.class.js"></script>
+        <script src="js/popup.js"></script>
+    </body>
+</html>

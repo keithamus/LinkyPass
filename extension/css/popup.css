@@ -1,0 +1,37 @@
+html, body, .popupPage {
+    width: 250px;
+    height: 310px;
+    overflow: hidden;
+}
+
+button {
+    width: 210px;
+}
+
+#fld-trimdomain {
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.popupPage {
+    display: block;
+}
+.popupPage.hidden {
+    display: none;
+}
+
+#password_list li {
+    display: block;
+    padding: 10px;
+    color: rgb(236, 240, 241);
+    background: rgb(34, 127, 187);
+    border-bottom: 1px solid;
+}
+
+#password_list li.hover, #password_list li:hover {
+    background: rgb(44, 151, 222);
+}
+
+#password_list li.active, #password_list li:active {
+    background: rgb(30, 120, 180);
+}

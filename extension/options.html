@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>LinkyPass Options</title>
+    <link rel="stylesheet" href="css/common.css"></style>
+    <link rel="stylesheet" href="css/options.css"></style>
+</head>
+<body>
+
+    <header role="banner">
+        <h1>
+            <img src="icon_19.png">
+            LinkyPass Options
+        </h1>
+    </header>
+
+    <section class="panel">
+        <h2>Password Profiles</h2>
+        <table id="saved_passwords">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Check stored</th>
+                    <th>Stealth password</th>
+                    <th>Length</th>
+                    <th>Remembered</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <form id="newProfile">
+            <h2>Create new password profile</h2>
+
+            <label class="fld fld-input">
+                <i class="ic ic-name"></i>
+                <input id="name" type="text" value="" placeholder="Profile name" autofocus="autofocus">
+                <p class="hint">
+                    Give this password profile an easily recognisable name
+                </p>
+            </label>
+
+            <div class="password-preview">
+                <h4>What your password might look like:</h4>
+                <p>"<b class="domain">google.com</b><b>:</b><b class="pass">mypass123</b><b class="stealth"></b>" = "<b class="generatedPass"></b>"</p>
+            </div>
+
+            <label class="fld fld-input">
+                <i class="ic ic-pass"></i>
+                <input type="password" id="password" placeholder="Master password" value="">
+                <p class="hint">
+                    Master password is the password you will enter every time you want
+                    to generate a password
+                </p>
+            </label>
+
+            <label class="fld fld-input">
+                <i class="ic ic-stealth"></i>
+                <input type="password" id="stealth" placeholder="Stealth password (optional)" value="">
+                <p class="hint">
+                    A "stealth" password, also known as a "salt" is a special password that is
+                    added on to the end of your generated password. It is stored onto disk, but
+                    it adds just that little bit more security, to your password before hashing
+                    by adding more "entropy", it is useful to have if your master password is
+                    weak <em>but you will need to remember your stealth password when away from
+                    this computer!</em>
+                </p>
+            </label>
+
+            <label class="fld fld-range">
+                <i class="ic ic-number"></i>
+                <input id="length" type="range" min="4" max="24" step="1" value="10" data-value="10" placeholder="Password length">
+                <span class="range-value">10</span>
+                <p class="hint">Password length</p>
+            </label>
+
+            <label class="fld fld-checkbox">
+                <input type="checkbox" name="hash" checked>
+                <span>Store password to check if I typed it right</span>
+                <i class="ic ic-hint"></i>
+                <p class="hint">
+                    This will save a "hash" of your password. You can use a hash to check your
+                    password (making sure you've entered it correctly), but is securely stored in
+                    the browser, meaning it cannot be turned back into your password. This makes
+                    it secure, but helps you to make sure you correctly inputted your password.
+                </p>
+            </label>
+
+            <label class="fld fld-checkbox">
+                <input type="checkbox" name="session">
+                <span>Remember my password for the browsing session</span>
+                <i class="ic ic-hint"></i>
+                <p class="hint">
+                    We will save your password as plaintext, inside the browser. When you close
+                    the browser, it will forget this information. This option is remembered so
+                    that you only have to enter it once every time you open your browser. This
+                    means your password is kept secure, so long <em>as you close your browser
+                    after each use</em>.
+                </p>
+            </label>
+
+            <label class="fld fld-checkbox">
+                <input type="checkbox" name="always">
+                <span>Remember my password forever</span>
+                <i class="ic ic-hint"></i>
+                <p class="hint">
+                    Your password will be saved as plaintext, kept in the browser until you click
+                    to forget it. This is important because if someone uses your computer, they
+                    will have full access to your passwords. In other words; <em>do not use this
+                    option unless you fully understand the consequences and are sure no one else
+                    will use your computer</em>.
+                </p>
+            </label>
+
+            <button type="submit">Create new profile</button>
+        </form>
+
+    </section>
+
+    <section class="panel" id="about">
+        <p><small>
+            Thanks to all the supporters and all those whom have reported issues. Your
+            effort has made LinkyPass the best it can be.
+        </small></p>
+        <p><small>
+            LinkyPass is created and &copy; Keith Cirkel, under the MIT licence for more
+            information about the MIT licence, please visit the
+            <a href="http://www.opensource.org/licenses/mit-license.php">OSI Licence Information</a>
+        </small></p>
+        <p><small>
+            You can donate to the LinkyPass project by using
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=10497475">this link</a>
+        </small></p>
+        <p><small>
+            LinkyPass is based off of the great work of
+            <a href="http://www.supergenpass.com">SuperGenPass</a>
+        </small></p>
+    </section>
+
+    <script src="bower_components/zepto/zepto.js"></script>
+    <script src="js/bcrypt.js"></script>
+    <script src="js/password.class.js"></script>
+    <script src="js/options.js"></script>
+</body>
+</html>
