@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>LinkyPass Visual Tests</title>
+    <style>
+        html, body, iframe {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #popup {
+            border: 2px solid white;
+            position: absolute;
+            width: 250px;
+            height: 310px;
+            background: white;
+            top: 30px;
+            right: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        button {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="javascript:var popup=document.getElementById('popup');popup.style.display=popup.style.display!=='none'?'none':'block';">Popup</button>
+    <iframe id="popup" style="display:none" src="../extension/popup.html"></iframe>
+    <iframe src="../extension/options.html"></iframe>
+    <script>
+        if (/block/.test(location.search)) {
+            document.getElementById('popup').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
