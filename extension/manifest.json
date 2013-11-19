@@ -1,22 +1,36 @@
 {
-    "name": "SuperChromePass",
-    "description": "Generate secure passwords unique for each website you visit",
+    "name": "LinkyPass",
+    "description": "Generate secure passwords unique to each website you visit",
     "version": "1.2",
-    "background_page": "scp_background.html",
-    "options_page": "scp_options.html",
+    "manifest_version": 2,
+    "options_page": "options.html",
     "permissions": [
-        "tabs", "http://*/*", "https://*/*"
+        "tabs",
+        "http://*/*",
+        "https://*/*",
+        "storage"
     ],
     "browser_action": {
-        "default_title": "SuperChromePass",
+        "default_title": "LinkyPass",
         "default_icon": "icon_19.png",
-        "popup": "scp_popup.html"
+        "default_popup": "popup.html"
     },
     "content_scripts": [{
-        "matches": ["http://*/*", "https://*/*"],
-        "js": ["jquery.js","superchromepass.js","supergenpass.js"],
-        "css": ["scp.css","updateBar.css"]
+        "matches": [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "js": ["js/content.js"],
+        "all_frames": true
     }],
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+8",
+                "mac": "MacCtrl+Shift+8"
+            }
+        }
+    },
     "icons": {
         "128": "icon_128.png",
         "19": "icon_19.png",
