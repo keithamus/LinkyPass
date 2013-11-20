@@ -122,6 +122,15 @@ h1 img {
     box-sizing: border-box;
 }
 
+.fld-input.hover {
+    border-color: rgb(69, 162, 255);
+}
+
+.fld-input.focus {
+    border-color: rgb(69, 162, 255);
+    outline: 1px solid rgb(26, 188, 156);
+}
+
 .fld-input .ic + input {
     padding-left: 30px;
 }
@@ -158,6 +167,16 @@ h1 img {
     box-sizing: border-box;
     display: inline-block;
     float: left;
+    cursor: pointer;
+}
+
+.fld-checkbox input:hover {
+    border-color: rgb(69, 162, 255);
+}
+
+.fld-checkbox input:active, .fld-checkbox input:focus {
+    border-color: rgb(69, 162, 255);
+    outline: 1px solid rgb(26, 188, 156);
 }
 
 .fld-checkbox input:checked:after {
@@ -212,10 +231,11 @@ form button[type=submit]:active, form button[type=submit]:focus {
 
 .ic ~ .hint {
     display: none;
-    background: rgb(236, 240, 241);
+    background: rgb(255, 255, 255);
     position: absolute;
     border: 1px solid rgb(43, 62, 81);
-    padding: 3px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    padding: 10px;
     font-size: 14px;
     max-width: 400px;
 }

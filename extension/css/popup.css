@@ -1,7 +1,7 @@
-html, body, .popupPage {
+html, body {
     width: 250px;
-    height: 310px;
-    overflow: hidden;
+    height: 250px;
+    overflow: scroll;
 }
 
 button {
@@ -34,4 +34,8 @@ button {
 
 #password_list li.active, #password_list li:active {
     background: rgb(30, 120, 180);
+}
+
+#generated_password {
+    font-family: monospace;
 }
