@@ -15,6 +15,9 @@
         "default_icon": "icon_19.png",
         "default_popup": "popup.html"
     },
+    "background": {
+        "scripts": ["js/background.js"]
+    },
     "content_scripts": [{
         "matches": [
             "http://*/*",

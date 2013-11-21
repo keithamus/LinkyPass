@@ -16,23 +16,31 @@
         options.length = Number(options.length === undefined ? 10 : options.length);
         this.id = guid();
         this.type = 'SGP';
-        this.name = options.name || 'My Password';
+        this.name = options.name || 'Default';
         this.password = this.always ? options.password : '';
         this.stealth = options.stealth || '';
         this.length = options.length < 4 ? 4 : options.length > 24 ? 24 : options.length;
         this.hash = options.hash ? this.generateHash(options.password) : false;
         this.session = Boolean(options.session);
         this.always = Boolean(options.always);
+        this.storeSessionPassword();
     }
 
     Password.prototype = {
         constructor: Password,
+
+        storeSessionPassword: function storeSessionPassword(password) {
+            if (this.session && password) {
+                chrome.extension.getBackgroundPage().passwords[this.id] = password;
+            }
+        },
 
         generate: function generate(password, url, trimDomain) {
             password = password || this.password;
             if (this.stealth) {
                 password += this.stealth;
             }
+            this.storeSessionPassword();
             return Password.generators[this.type](password, Password.parseUrl(url, trimDomain), this.length);
         },
 
@@ -64,6 +72,9 @@
                 Object.keys(options).forEach(function (key) {
                     pass[key] = options[key];
                 });
+                if (pass.session) {
+                    pass.password = chrome.extension.getBackgroundPage().passwords[pass.id];
+                }
                 return pass;
             }));
         });
