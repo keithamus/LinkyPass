@@ -1,16 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>LinkyPass Manual Tests</title>
 </head>
+
 <body>
 
-    <form>
+    <form autocomplete="off">
         <label>
             Password
             <input type="password">
         </label>
     </form>
 
+    <hr>
+
+    <!-- Capital One -->
+    <form autocomplete="off">
+        <div class="pass-char">
+            <p>
+                <strong>1st character</strong>
+                <input type="password" name="password.randomCharacter0" maxlength="1" size="1" value="" onkeyup="autoTab(this,1,event);" id="passwordChar1">
+            </p>
+            <p>
+                <strong>6th character</strong>
+                <input type="password" name="password.randomCharacter1" maxlength="1" size="1" value="" onkeyup="autoTab(this,1,event);" id="passwordChar2">
+            </p>
+            <p>
+                <strong>7th character</strong>
+                <input type="password" name="password.randomCharacter2" maxlength="1" size="1" value="" id="passwordChar3">
+            </p>
+            <div class="clear"></div>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- Natwest -->
+    <form autocomplete="off">
+        <div class="tabcontainer">
+            <div class="box_li5border">
+                <div class="innerspacing1">
+                    <div class="box_li6ainntertab">
+                        <div class="innerspacing2">
+                            <div class="noBottomPad tabSpace hollyHack">
+                                <ul class="form">
+                                    <li class="first">
+                                        <label for="ctl00_mainContent_LI6ATABA_LI6APPED_edit" class="wizCrl wizardLabelRememberMeWide">Enter the 2nd character</label>
+                                        <span>
+                                            <span>
+                                                <input name="ctl00$mainContent$LI6ATABA$LI6APPED_edit" type="password" maxlength="1" size="1" autocomplete="off">
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <label for="ctl00_mainContent_LI6ATABA_LI6APPEE_edit" class="wizCrl wizardLabelRememberMeWide">Enter the 3rd character</label>
+                                        <span>
+                                            <span>
+                                                <input name="ctl00$mainContent$LI6ATABA$LI6APPEE_edit" type="password" maxlength="1" size="1" autocomplete="off">
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <label for="ctl00_mainContent_LI6ATABA_LI6APPEF_edit" class="wizCrl wizardLabelRememberMeWide">Enter the 7th character</label>
+                                        <span>
+                                            <span>
+                                                <input name="ctl00$mainContent$LI6ATABA$LI6APPEF_edit" type="password" maxlength="1" size="1" autocomplete="off">
+                                            </span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- Experian -->
+    <form>
+        <div id="mainBox">
+            <div id="innerBox">
+                <div id="contentBox">
+                    <div id="content">
+                        <div class="container3">
+                            <div id="forgotten-username-and-password" class="formOrderPage">
+                                <div>
+                                    <label>
+                                        <span id="loginUserMemorableWord_SecurityQuestionLetter1" class="forInputBox">Letter 4:</span>
+                                    </label>
+                                    <input name="loginUserMemorableWord:SecurityQuestionUK1_SecurityAnswer1_ECDTextBox" type="text" maxlength="1" size="1" id="loginUserMemorableWord_SecurityQuestionUK1_SecurityAnswer1_ECDTextBox" autocomplete="off" style="width:22px;">
+                                </div>
+                                <div>
+                                    <label>
+                                        <span id="loginUserMemorableWord_SecurityQuestionLetter2" class="forInputBox">Letter 1:</span>
+                                    </label>
+                                    <input name="loginUserMemorableWord:SecurityQuestionUK1_SecurityAnswer2_ECDTextBox" type="text" maxlength="1" size="1" id="loginUserMemorableWord_SecurityQuestionUK1_SecurityAnswer2_ECDTextBox" autocomplete="off" style="width:22px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
 </body>
+
 </html>
