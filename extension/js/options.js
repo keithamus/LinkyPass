@@ -27,6 +27,19 @@
     }
 
     $(function () {
+
+        $('body').on('focus', '.fld input', function () {
+            $(this).parents('.fld').addClass('focus');
+        }).on('blur', '.fld input', function () {
+            $(this).parents('.fld').removeClass('focus');
+        });
+
+        $('body').on('mouseenter', '.fld input', function () {
+            $(this).parents('.fld').addClass('hover');
+        }).on('mouseleave', '.fld input', function () {
+            $(this).parents('.fld').removeClass('hover');
+        });
+
         $('input[type=range]').on('change', function () {
             var $this = $(this);
             var rangeValue = $this.siblings('.range-value');
