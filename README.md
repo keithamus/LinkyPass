@@ -9,9 +9,12 @@ but you'll get a different password for every website you visit. It builds on th
 When you're not able to use LinkyPass, you can still use the tools available at
 [SuperGenPass](http://supergenpass.com), they will generate the same passwords.
 
-LinkyPass is super convinient to use, 
+LinkyPass is super convinient to use, just 
+[download it from the Chrome Store](https://chrome.google.com/webstore/detail/linkypass/lhdkhclanadpojhanlagakmeiefbbahk)
+and give it a try!
 
 Screenshots
 -----------
 
-![http://superchromepass.googlecode.com/files/superchromepass.png](http://superchromepass.googlecode.com/files/superchromepass.png)
+![](http://lh3.googleusercontent.com/dB2yWCpV1fzr06QTQgE1_vSkaA578BzgX8K4AsxrWLK1YF54g6LLCHlU796ZhXMPHjL9dKLk=s1280-h800-e365-rw)
+![](http://lh4.googleusercontent.com/FStW66jSIWTX_1MIgAJgEtSYBbRuPaFrGCxC71Y-PkCA2hzxCeEn6rXKkaE-6kBt2OYSvbYLDQ=s1280-h800-e365-rw)
