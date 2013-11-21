@@ -1,7 +1,7 @@
 {
     "name": "LinkyPass",
     "description": "Generate secure passwords unique to each website you visit",
-    "version": "1.2",
+    "version": "2.0.0",
     "manifest_version": 2,
     "options_page": "options.html",
     "permissions": [
