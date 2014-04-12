@@ -116,6 +116,7 @@
 
         $('#generated_password').on('focus', function () {
             this.type = 'text';
+            setTimeout(this.select.bind(this), 1);
         }).on('blur', function () {
             this.type = 'password';
         });
