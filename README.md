@@ -1,6 +1,10 @@
 LinkyPass
 ===============
 
+[![Release](http://img.shields.io/github/tag/keithamus/LinkyPass.svg)](https://chrome.google.com/webstore/detail/linkypass/lhdkhclanadpojhanlagakmeiefbbahk)
+[![Gittip donate button](http://img.shields.io/gittip/keithamus.svg?style=flat)](https://www.gittip.com/keithamus/)
+
+
 LinkyPass is an awesome [Chrome Extension](http://chrome.google.com/extensions) that generates secure passwords,
 unique to each website you visit, based on your own master password. You only have to remember one password,
 but you'll get a different password for every website you visit. It builds on the great work of
