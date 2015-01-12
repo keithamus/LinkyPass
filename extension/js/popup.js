@@ -1,10 +1,15 @@
 (function ($) {
     'use strict';
     var selectedPass;
+    var siteException;
 
     function updateDomain() {
         var domain = $('#domain');
-        domain.val(Password.parseUrl(domain.attr('data-originalurl'), $('#trimdomain')[0].checked));
+        var value = Password.parseUrl(domain.attr('data-originalurl'), $('#trimdomain')[0].checked);
+        if (siteException && siteException.changeDomain) {
+            value = siteException.changeDomain;
+        }
+        domain.val(value);
     }
 
     function setupPassword() {
@@ -26,6 +31,9 @@
                     $('#domain').val(),
                     $('#trimdomain')[0].checked
                 );
+                if (siteException && siteException.append) {
+                    password = password + siteException.append;
+                }
                 $('#generated_password').val(password);
                 chrome.tabs.getSelected(function (currentTab) {
                     chrome.tabs.sendRequest(currentTab.id, {
@@ -63,6 +71,15 @@
                     '</li>');
                 });
             }
+        });
+
+        Exception.retreive(null, function (excs) {
+            excs.forEach(function (exc, i) {
+                if (exc.domain === $('#domain').val()) {
+                    siteException = exc;
+                    updateDomain();
+                }
+            });
         });
 
         $passwordList.on('mouseenter', 'li', function () {

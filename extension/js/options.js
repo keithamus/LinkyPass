@@ -26,6 +26,17 @@
         );
     }
 
+    function addException(exception) {
+        $('#saved_exceptions tbody').append(
+            '<tr>' +
+                '<td>' + exception.domain + '</td>' +
+                '<td>' + exception.changeDomain + '</td>' +
+                '<td>' + exception.append + '</td>' +
+                '<td><button class="remove" data-id="' + exception.id + '">Remove</button></td>' +
+            '</tr>'
+        );
+    }
+
     $(function () {
 
         $('body').on('focus', '.fld input', function () {
@@ -80,7 +91,26 @@
             });
         });
 
+        $('#newException').on('submit', function (event) {
+            event.preventDefault();
+            var exception = new Exception({
+                domain: this.domain.value,
+                changeDomain: this.changeDomain.value,
+                append: this.append.value,
+            });
+            exception.save(function () {
+                addException(exception);
+            });
+        });
+
         $('#saved_passwords').on('click', '.remove', function () {
+            var $this = $(this);
+            chrome.storage.sync.remove($this.data('id'), function () {
+                $this.parents('tr').remove();
+            });
+        });
+
+        $('#saved_exceptions').on('click', '.remove', function () {
             var $this = $(this);
             chrome.storage.sync.remove($this.data('id'), function () {
                 $this.parents('tr').remove();
@@ -91,5 +121,8 @@
             items.forEach(addPassword);
         });
 
+        Exception.retreive(null, function (items) {
+            items.forEach(addException);
+        });
     });
 })(Zepto);
