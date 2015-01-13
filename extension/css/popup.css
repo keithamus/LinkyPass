@@ -1,7 +1,6 @@
 html, body {
-    width: 250px;
-    height: 250px;
-    overflow: scroll;
+    min-width: 250px;
+    min-height: 250px;
 }
 
 button {
