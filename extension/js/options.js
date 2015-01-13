@@ -26,13 +26,13 @@
         );
     }
 
-    function addException(exception) {
-        $('#saved_exceptions tbody').append(
+    function addSiteProfile(profile) {
+        $('#saved_site_profiles tbody').append(
             '<tr>' +
-                '<td>' + exception.domain + '</td>' +
-                '<td>' + exception.changeDomain + '</td>' +
-                '<td>' + exception.append + '</td>' +
-                '<td><button class="remove" data-id="' + exception.id + '">Remove</button></td>' +
+                '<td>' + profile.domain + '</td>' +
+                '<td>' + profile.changeDomain + '</td>' +
+                '<td>' + profile.append + '</td>' +
+                '<td><button class="remove" data-id="' + profile.id + '">Remove</button></td>' +
             '</tr>'
         );
     }
@@ -91,15 +91,15 @@
             });
         });
 
-        $('#newException').on('submit', function (event) {
+        $('#newSiteProfile').on('submit', function (event) {
             event.preventDefault();
-            var exception = new Exception({
+            var profile = new SiteProfile({
                 domain: this.domain.value,
                 changeDomain: this.changeDomain.value,
                 append: this.append.value,
             });
-            exception.save(function () {
-                addException(exception);
+            profile.save(function () {
+                addSiteProfile(profile);
             });
         });
 
@@ -110,7 +110,7 @@
             });
         });
 
-        $('#saved_exceptions').on('click', '.remove', function () {
+        $('#saved_site_profiles').on('click', '.remove', function () {
             var $this = $(this);
             chrome.storage.sync.remove($this.data('id'), function () {
                 $this.parents('tr').remove();
@@ -121,8 +121,8 @@
             items.forEach(addPassword);
         });
 
-        Exception.retreive(null, function (items) {
-            items.forEach(addException);
+        SiteProfile.retreive(null, function (items) {
+            items.forEach(addSiteProfile);
         });
     });
 })(Zepto);

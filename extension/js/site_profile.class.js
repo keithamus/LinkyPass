@@ -9,17 +9,17 @@
         });
     }
 
-    function Exception(options) {
+    function SiteProfile(options) {
         options = options || {};
         this.id = guid();
-        this.type = 'exception';
+        this.type = 'site_profile';
         this.domain = options.domain || '';
         this.changeDomain = options.changeDomain || '';
         this.append = options.append || '';
     }
 
-    Exception.prototype = {
-        constructor: Exception,
+    SiteProfile.prototype = {
+        constructor: SiteProfile,
 
         save: function save(callback) {
             var ob = {};
@@ -28,20 +28,15 @@
         }
     };
 
-    Exception.retreive = function retreive(id, callback) {
+    SiteProfile.retreive = function retreive(id, callback) {
         chrome.storage.sync.get(id, function (items) {
             callback(Object.keys(items).map(function (key) {
-                var options = JSON.parse(items[key]),
-                    exception = items[key] = Object.create(Password.prototype);
-                Object.keys(options).forEach(function (key) {
-                    exception[key] = options[key];
-                });
-                return exception;
+                return new SiteProfile(JSON.parse(items[key]));
             }).filter(function (p){
-                return p.type === 'exception';
+                return p.type === 'site_profile';
             }));
         });
     };
 
-    window.Exception = Exception;
+    window.SiteProfile = SiteProfile;
 })();

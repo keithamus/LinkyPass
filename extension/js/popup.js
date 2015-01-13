@@ -1,13 +1,13 @@
 (function ($) {
     'use strict';
     var selectedPass;
-    var siteException;
+    var siteProfile;
 
     function updateDomain() {
         var domain = $('#domain');
         var value = Password.parseUrl(domain.attr('data-originalurl'), $('#trimdomain')[0].checked);
-        if (siteException && siteException.changeDomain) {
-            value = siteException.changeDomain;
+        if (siteProfile && siteProfile.changeDomain) {
+            value = siteProfile.changeDomain;
         }
         domain.val(value);
     }
@@ -31,8 +31,8 @@
                     $('#domain').val(),
                     $('#trimdomain')[0].checked
                 );
-                if (siteException && siteException.append) {
-                    password = password + siteException.append;
+                if (siteProfile && siteProfile.append) {
+                    password = password + siteProfile.append;
                 }
                 $('#generated_password').val(password);
                 chrome.tabs.getSelected(function (currentTab) {
@@ -73,10 +73,10 @@
             }
         });
 
-        Exception.retreive(null, function (excs) {
-            excs.forEach(function (exc, i) {
-                if (exc.domain === $('#domain').val()) {
-                    siteException = exc;
+        SiteProfile.retreive(null, function (profiles) {
+            profiles.forEach(function (profile, i) {
+                if (profile.domain === $('#domain').val()) {
+                    siteProfile = profile;
                     updateDomain();
                 }
             });

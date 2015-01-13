@@ -121,8 +121,8 @@
     </section>
 
     <section class="panel">
-        <h2>Site exceptions</h2>
-        <table id="saved_exceptions">
+        <h2>Site profiles</h2>
+        <table id="saved_site_profiles">
             <thead>
                 <tr>
                     <th>Domain</th>
@@ -136,14 +136,14 @@
     </section>
 
     <section class="panel">
-        <form id="newException">
-            <h2>Create new site exception</h2>
+        <form id="newSiteProfile">
+            <h2>Create new site profile</h2>
 
             <label class="fld fld-input">
                 <i class="ic ic-domain"></i>
                 <input id="domain" type="text" value="" placeholder="Domain" autofocus="autofocus">
                 <p class="hint">
-                    Give the domain that this exception applies to.
+                    Give the domain that this profile applies to.
                 </p>
             </label>
 
@@ -151,7 +151,8 @@
                 <i class="ic ic-domchange"></i>
                 <input id="changeDomain" type="text" value="" placeholder="Change domain to">
                 <p class="hint">
-                    Enter a different domain here to change the domain that will be used for password calculation. (This setting is useful when a site uses the same login on multiple domains.)
+                    Enter a different domain here to change the domain that will be used for password calculation. 
+                    (This setting is useful when a site uses the same login on multiple domains.)
                 </p>
             </label>
 
@@ -164,7 +165,7 @@
                 </p>
             </label>
 
-            <button type="submit">Create new site exception</button>
+            <button type="submit">Create new site profile</button>
         </form>
 
     </section>
@@ -192,7 +193,7 @@
     <script src="bower_components/zepto/zepto.js"></script>
     <script src="js/bcrypt.js"></script>
     <script src="js/password.class.js"></script>
-    <script src="js/exception.class.js"></script>
+    <script src="js/site_profile.class.js"></script>
     <script src="js/options.js"></script>
 </body>
 </html>
