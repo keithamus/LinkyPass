@@ -1,10 +1,15 @@
 (function ($) {
     'use strict';
     var selectedPass;
+    var siteProfile;
 
     function updateDomain() {
         var domain = $('#domain');
-        domain.val(Password.parseUrl(domain.attr('data-originalurl'), $('#trimdomain')[0].checked));
+        var value = Password.parseUrl(domain.attr('data-originalurl'), $('#trimdomain')[0].checked);
+        if (siteProfile && siteProfile.changeDomain) {
+            value = siteProfile.changeDomain;
+        }
+        domain.val(value);
     }
 
     function setupPassword() {
@@ -26,6 +31,9 @@
                     $('#domain').val(),
                     $('#trimdomain')[0].checked
                 );
+                if (siteProfile && siteProfile.append) {
+                    password = password + siteProfile.append;
+                }
                 $('#generated_password').val(password);
                 chrome.tabs.getSelected(function (currentTab) {
                     chrome.tabs.sendRequest(currentTab.id, {
@@ -63,6 +71,16 @@
                     '</li>');
                 });
             }
+        });
+
+        SiteProfile.retreive(null, function (profiles) {
+            var domain = $('#domain').val();
+            profiles.some(function (profile, i) {
+                if (profile.domain === domain) {
+                    siteProfile = profile;
+                    updateDomain();
+                }
+            });
         });
 
         $passwordList.on('mouseenter', 'li', function () {

@@ -120,6 +120,56 @@
 
     </section>
 
+    <section class="panel">
+        <h2>Site profiles</h2>
+        <table id="saved_site_profiles">
+            <thead>
+                <tr>
+                    <th>Domain</th>
+                    <th>Change domain to</th>
+                    <th>Append string</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <form id="newSiteProfile">
+            <h2>Create new site profile</h2>
+
+            <label class="fld fld-input">
+                <i class="ic ic-domain"></i>
+                <input id="domain" type="text" value="" placeholder="Domain" autofocus="autofocus">
+                <p class="hint">
+                    Give the domain that this profile applies to.
+                </p>
+            </label>
+
+            <label class="fld fld-input">
+                <i class="ic ic-domchange"></i>
+                <input id="changeDomain" type="text" value="" placeholder="Change domain to">
+                <p class="hint">
+                    Enter a different domain here to change the domain that will be used for password calculation. 
+                    (This setting is useful when a site uses the same login on multiple domains.)
+                </p>
+            </label>
+
+            <label class="fld fld-input">
+                <i class="ic ic-append"></i>
+                <input id="append" type="text" value="" placeholder="Append string">
+                <p class="hint">
+                    This string will be appended to the calculated password.
+                    (This setting is useful when a site requires passwords to contain special characters.)
+                </p>
+            </label>
+
+            <button type="submit">Create new site profile</button>
+        </form>
+
+    </section>
+
     <section class="panel" id="about">
         <p><small>
             Thanks to all the supporters and all those whom have reported issues. Your
@@ -143,6 +193,7 @@
     <script src="bower_components/zepto/zepto.js"></script>
     <script src="js/bcrypt.js"></script>
     <script src="js/password.class.js"></script>
+    <script src="js/site_profile.class.js"></script>
     <script src="js/options.js"></script>
 </body>
 </html>

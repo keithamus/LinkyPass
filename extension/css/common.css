@@ -30,10 +30,12 @@
 .ic-hidden:before  { content: '\e801'; } /* '' */
 .ic-pass:before    { content: '\e802'; } /* '' */
 .ic-domain:before  { content: '\e803'; } /* '' */
+.ic-domchange:before  { content: '\e803'; } /* '' */
 .ic-ok:before      { content: '\e804'; } /* '' */
 .ic-invalid:before { content: '\e805'; } /* '' */
 .ic-valid:before   { content: '\e806'; } /* '' */
 .ic-stealth:before { content: '\e807'; } /* '' */
+.ic-append:before { content: '\e807'; } /* '' */
 .ic-number:before  { content: '\e808'; } /* '' */
 .ic-name:before    { content: '\e809'; } /* '' */
 .ic-hint:before    { content: '\e810'; } /* '' */

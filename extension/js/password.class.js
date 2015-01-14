@@ -76,6 +76,8 @@
                     pass.password = chrome.extension.getBackgroundPage().passwords[pass.id];
                 }
                 return pass;
+            }).filter(function (p){
+                return Object.keys(Password.generators).indexOf(p.type) >= 0;
             }));
         });
     };

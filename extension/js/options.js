@@ -26,6 +26,17 @@
         );
     }
 
+    function addSiteProfile(profile) {
+        $('#saved_site_profiles tbody').append(
+            '<tr>' +
+                '<td>' + profile.domain + '</td>' +
+                '<td>' + profile.changeDomain + '</td>' +
+                '<td>' + profile.append + '</td>' +
+                '<td><button class="remove" data-id="' + profile.id + '">Remove</button></td>' +
+            '</tr>'
+        );
+    }
+
     $(function () {
 
         $('body').on('focus', '.fld input', function () {
@@ -80,7 +91,26 @@
             });
         });
 
+        $('#newSiteProfile').on('submit', function (event) {
+            event.preventDefault();
+            var profile = new SiteProfile({
+                domain: this.domain.value,
+                changeDomain: this.changeDomain.value,
+                append: this.append.value,
+            });
+            profile.save(function () {
+                addSiteProfile(profile);
+            });
+        });
+
         $('#saved_passwords').on('click', '.remove', function () {
+            var $this = $(this);
+            chrome.storage.sync.remove($this.data('id'), function () {
+                $this.parents('tr').remove();
+            });
+        });
+
+        $('#saved_site_profiles').on('click', '.remove', function () {
             var $this = $(this);
             chrome.storage.sync.remove($this.data('id'), function () {
                 $this.parents('tr').remove();
@@ -91,5 +121,8 @@
             items.forEach(addPassword);
         });
 
+        SiteProfile.retreive(null, function (items) {
+            items.forEach(addSiteProfile);
+        });
     });
 })(Zepto);
