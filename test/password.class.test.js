@@ -42,9 +42,9 @@ describe('Password Class', function () {
 
         });
 
-        it('sets the name from options, defaulting to "My Password"', function () {
+        it('sets the name from options, defaulting to "Default"', function () {
 
-            (new Password({ })).name.should.equal('My Password');
+            (new Password({ })).name.should.equal('Default');
             (new Password({ name: 'foo' })).name.should.equal('foo');
             (new Password({ name: 'MyPass' })).name.should.equal('MyPass');
 
