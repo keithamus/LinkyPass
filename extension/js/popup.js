@@ -74,8 +74,9 @@
         });
 
         SiteProfile.retreive(null, function (profiles) {
-            profiles.forEach(function (profile, i) {
-                if (profile.domain === $('#domain').val()) {
+            var domain = $('#domain').val();
+            profiles.some(function (profile, i) {
+                if (profile.domain === domain) {
                     siteProfile = profile;
                     updateDomain();
                 }
