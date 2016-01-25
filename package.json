@@ -1,0 +1,46 @@
+{
+  "name": "linkypass",
+  "version": "0.0.0-development",
+  "description": "LinkyPass Google Chrome Extension",
+  "homepage": "https://github.com/keithamus/SuperChromePass#readme",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/keithamus/SuperChromePass/issues"
+  },
+  "license": "MIT",
+  "author": "Keith Cirkel <npm@keithcirkel.co.uk> (http://keithcirkel.co.uk/)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:keithamus/LinkyPass.git"
+  },
+  "scripts": {
+    "build": "npm run build:zepto && npm run build:bcrypt",
+    "build:bcrypt": "cp ./node_modules/bcryptjs/dist/bcrypt.min.js ./extension/js/bcrypt.js",
+    "build:zepto": "cp ./node_modules/zepto/zepto.min.js ./extension/js/zepto.js",
+    "release": "git describe --tags --exact-match && npm run build && npm run version && npm run package",
+    "version": "json -f ./extension/manifest.json -IAe \"this.version=$(git describe --tags --exact-match)\"",
+    "package": "zip -0vr extension.zip extension",
+    "test": "npm run build && karma start --singleRun=true"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "json": "^9.0.3",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-mocha": "^0.2.1",
+    "karma-sauce-launcher": "^0.3.0",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.3.0",
+    "karma-chai": "^0.1.0",
+    "karma-sinon": "^1.0.4",
+    "travis-after-all": "^1.4.4",
+    "zepto": "^1.0.1"
+  }
+}

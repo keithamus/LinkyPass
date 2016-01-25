@@ -1,0 +1,13 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+node_js:
+  - stable
+env:
+  global:
+    - secure: SDs8JsNwYCuiLqiwM4UHJu+97WyNnfwPOXHjvA9HkzALtxztgWgEFf+WHA+GE4rItu1cRsNjeEpMtOz9uaaJkbjRt2SqN/HCiSxk4EsrSxBysol0yjtDuFsKyl0Qo1VF/Y+DYYRPXkVTC0wXiUlXUHHKyKbeYkkNWepxtUVsLec=
+    - secure: N8C/sWh9cBwGsNUt7ZMTbmA0lI62ZOwYfX8uwLiDiehsJw4vA0oMRrR2VObplMJyxEbYq3emw1tItYOTtDkobt17OWaPNCHZ7BaXL97w2qt84o0BYgiAzpEoK69yXrBXjausvQ6AkAfCeFjb43Mfh3pU74piFI/t/Ap/X5lm7mE=
+addons:
+  sauce_connect: true

@@ -1,1 +1,11 @@
-bower_components
+*~
+Thumbs.db
+node_modules/
+*.log
+*.log*
+*.pid
+*.seed
+lib/
+*.pem
+extension/js/zepto.js
+extension/js/bcrypt.js

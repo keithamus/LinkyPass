@@ -1,42 +1,48 @@
 {
-    "name": "LinkyPass",
-    "description": "Generate secure passwords unique to each website you visit",
-    "version": "2.0.0",
-    "manifest_version": 2,
-    "options_page": "options.html",
-    "permissions": [
-        "tabs",
+  "name": "LinkyPass",
+  "description": "Generate secure passwords unique to each website you visit",
+  "manifest_version": 2,
+  "options_page": "options.html",
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "storage"
+  ],
+  "browser_action": {
+    "default_title": "LinkyPass",
+    "default_icon": "icon_19.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
         "http://*/*",
-        "https://*/*",
-        "storage"
-    ],
-    "browser_action": {
-        "default_title": "LinkyPass",
-        "default_icon": "icon_19.png",
-        "default_popup": "popup.html"
-    },
-    "background": {
-        "scripts": ["js/background.js"]
-    },
-    "content_scripts": [{
-        "matches": [
-            "http://*/*",
-            "https://*/*"
-        ],
-        "js": ["js/content.js"],
-        "all_frames": true
-    }],
-    "commands": {
-        "_execute_browser_action": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+8",
-                "mac": "MacCtrl+Shift+8"
-            }
-        }
-    },
-    "icons": {
-        "128": "icon_128.png",
-        "19": "icon_19.png",
-        "16": "icon_16.png"
+        "https://*/*"
+      ],
+      "js": [
+        "js/content.js"
+      ],
+      "all_frames": true
     }
+  ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+8",
+        "mac": "MacCtrl+Shift+8"
+      }
+    }
+  },
+  "icons": {
+    "16": "icon_16.png",
+    "19": "icon_19.png",
+    "128": "icon_128.png"
+  },
+  "version": "2.1.0"
 }
