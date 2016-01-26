@@ -9,7 +9,7 @@ module.exports = function(config) {
       browserName: 'Chrome',
     },
   };
-  config.set({
+  const configuration = {
     basePath: '',
     browsers: localBrowsers,
     frameworks: ['mocha', 'chai', 'sinon'],
@@ -32,16 +32,19 @@ module.exports = function(config) {
     browserNoActivityTimeout: timeout,
     singleRun: false,
     concurrency: Infinity
-  });
+  };
   if (process.env.SAUCE_ACCESS_KEY && process.env.SAUCE_USERNAME) {
     console.log('Using SAUCELABS');
-    config.reporters.push('saucelabs');
-    config.set({
-      customLaunchers: sauceLabsBrowsers,
-      browsers: Object.keys(sauceLabsBrowsers),
-      sauceLabs: {
-        testName: require('./package').name,
-      },
-    });
+    configuration.reporters.push('saucelabs');
+    configuration.customLaunchers = sauceLabsBrowsers;
+    configuration.browsers = Object.keys(sauceLabsBrowsers);
+    configuration.sauceLabs = {
+      testName: require('./package').name,
+    };
   }
+  if ('TRAVIS' in process.env) {
+    configuration.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
+    configuration.sauceLabs.startConnect = false;
+  }
+  config.set(configuration);
 }
