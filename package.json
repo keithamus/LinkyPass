@@ -21,13 +21,17 @@
     "build": "npm run build:zepto && npm run build:bcrypt",
     "build:bcrypt": "cp ./node_modules/bcryptjs/dist/bcrypt.min.js ./extension/js/bcrypt.js",
     "build:zepto": "cp ./node_modules/zepto/zepto.min.js ./extension/js/zepto.js",
-    "release": "git describe --tags --exact-match && npm run build && npm run version && npm run package",
+    "release": "git describe --tags --exact-match && npm run build && npm run version && npm run package && npm chromestore",
     "version": "json -f ./extension/manifest.json -IAe \"this.version=$(git describe --tags --exact-match)\"",
     "package": "zip -0vr extension.zip extension",
+    "chromestore": "export WEBSTORE_TOKEN=$(chrome-webstore-manager refresh_token --client_id \"$CHROME_CLIENT_ID\" --client_secret \"$CHROME_CLIENT_SECRET\" --refresh_token \"$CHROME_REFRESH_TOKEN\") && npm run chromestore:update && npm run chromestore:publish",
+    "chromestore:update": "chrome-webstore-manager update lhdkhclanadpojhanlagakmeiefbbahk extension.zip",
+    "chromestore:publish": "chrome-webstore-manager publish lhdkhclanadpojhanlagakmeiefbbahk",
     "test": "npm run build && karma start --singleRun=true"
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "chrome-webstore-manager": "^0.2.9",
     "json": "^9.0.3",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",

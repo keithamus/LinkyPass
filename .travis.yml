@@ -5,9 +5,13 @@ cache:
     - node_modules
 node_js:
   - stable
+after_success: "npm run release"
 env:
   global:
     - secure: SDs8JsNwYCuiLqiwM4UHJu+97WyNnfwPOXHjvA9HkzALtxztgWgEFf+WHA+GE4rItu1cRsNjeEpMtOz9uaaJkbjRt2SqN/HCiSxk4EsrSxBysol0yjtDuFsKyl0Qo1VF/Y+DYYRPXkVTC0wXiUlXUHHKyKbeYkkNWepxtUVsLec=
     - secure: N8C/sWh9cBwGsNUt7ZMTbmA0lI62ZOwYfX8uwLiDiehsJw4vA0oMRrR2VObplMJyxEbYq3emw1tItYOTtDkobt17OWaPNCHZ7BaXL97w2qt84o0BYgiAzpEoK69yXrBXjausvQ6AkAfCeFjb43Mfh3pU74piFI/t/Ap/X5lm7mE=
+    - secure: FrYUC29lE/AVVP1Ac9Nyn/1gt6f1ulPkEUQ7n232JGOccrpnbWvFuwGjrTydt3O7nXNaHGl7dp2phq1W/pio2TdQX2VuJzk3wny3f5XnjIth/gg07zZMAnXV+wMHjR1XO3IK2Av5t3iFQdTQwguGd5JhmDQWM9F004AVkMn3Fsk=
+    - secure: ZbCcFJx20CIE+6zzEQ6/lBW3u3FtKvNh8Y4lqAKHdxuotYCYT8ouuQJ3VU0xRHG2us5BxJ7U8hMrGGhB7l47X68H98nNVbHDF5RTTEdV4gCLNicwUpgseAXSL8z0W1lvCe0R30ZcdSWC+IqbtoQB7S450VyIQ7rlN9dIfO2M9yI=
+    - secure: Xyd6Y/Iis6y2G1eUD6128Wt+XPwq88CYbLqHCYH7bBtn+4DXbQfZwyRorRMbgJa3czDohGwHYTawaxDy4abM5yvLuFD4WV2hwL/bvgl0Z3+krJ+ZVwGbNS/5UHJIytIuGH6MfLrYky2mzYwpOU6f34z93Yv+lfugwajH1dFwyKk=
 addons:
   sauce_connect: true
