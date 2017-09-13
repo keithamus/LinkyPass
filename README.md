@@ -1,6 +1,8 @@
 LinkyPass
 ===============
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/ygkcNhfZ9nTDeVM6P8LSGn1C/keithamus/LinkyPass'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/ygkcNhfZ9nTDeVM6P8LSGn1C/keithamus/LinkyPass.svg' /></a>
+
 [![Release](http://img.shields.io/github/tag/keithamus/LinkyPass.svg)](https://chrome.google.com/webstore/detail/linkypass/lhdkhclanadpojhanlagakmeiefbbahk)
 [![Gittip donate button](http://img.shields.io/gittip/keithamus.svg?style=flat)](https://www.gittip.com/keithamus/)
 
