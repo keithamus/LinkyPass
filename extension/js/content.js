@@ -44,6 +44,6 @@ chrome.extension.onRequest.addListener(function (request, sender) {
             }
         }
     } else if (el.tagName === 'INPUT' && el.type === 'password') {
-        el.value = password.substr(0, el.maxLength || password.length);
+        el.value = password.substr(0, Math.max(el.maxLength, 0) || password.length);
     }
 });
